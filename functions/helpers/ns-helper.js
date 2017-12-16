@@ -1,7 +1,7 @@
 'use strict';
 
-const API_USERNAME = process.env.NS_API_USERNAME || functions.config().nsApi.Username;
-const API_PASSWORD = process.env.NS_API_PASSWORD || functions.config().nsApi.Password;
+const API_USERNAME = process.env.NS_API_USERNAME || functions.config().ns_api.username;
+const API_PASSWORD = process.env.NS_API_PASSWORD || functions.config().ns_api.password;
 
 const ns = require('ns-api')({
   username: API_USERNAME,
