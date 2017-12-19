@@ -1,5 +1,7 @@
 'use strict';
 
+const functions = require('firebase-functions');
+
 const API_USERNAME = process.env.NS_API_USERNAME || functions.config().ns_api.username;
 const API_PASSWORD = process.env.NS_API_PASSWORD || functions.config().ns_api.password;
 
