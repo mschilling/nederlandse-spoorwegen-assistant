@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config({silent: true});
+
 const functions = require('firebase-functions');
 const moment = require('moment');
 
@@ -34,6 +36,22 @@ class NsHelper {
     });
 
   }
+
+  static stations() {
+    return new Promise(function (resolve, reject) {
+      ns.stations(function (err, data) {
+        if (err !== null) return reject(err);
+
+        const resultItems = [];
+        for (let i = 0; i < data.length; i++) {
+          resultItems.push(data[i]);
+        }
+        resolve(data);
+      });
+    });
+
+  }
+
 }
 
 function wrapReisadviesItem(data) {
