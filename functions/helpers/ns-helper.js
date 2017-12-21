@@ -26,6 +26,22 @@ class NsHelper {
     });
 
   }
+
+  static stations(params) {
+    return new Promise(function (resolve, reject) {
+      ns.stations(params, function (err, data) {
+        if (err !== null) return reject(err);
+
+        const resultItems = [];
+        for (let i = 0; i < data.length; i++) {
+          resultItems.push(data[i]);
+        }
+        resolve(resultItems);
+      });
+    });
+
+  }
+
 }
 
 function wrapReisadviesItem(data) {
