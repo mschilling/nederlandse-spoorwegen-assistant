@@ -24,11 +24,15 @@ exports.assistant = functions.https.onRequest((request, response) => {
 function planTrip(assistant) {
   let fromCity = assistant.getArgument('from-city');
   let toCity = assistant.getArgument('to-city');
+  let fromStation = assistant.getArgument('from-station');
+  let toStation = assistant.getArgument('to-station');
+
+
   let departureTime;
 
   const params = {
-    fromStation: fromCity,
-    toStation: toCity
+    fromStation: fromStation || fromCity,
+    toStation: toStation || toCity
   };
 
   return nsApi.reisadvies(params)
