@@ -32,18 +32,21 @@ function wrap(data) {
     synonyms: []
   }
 
-  obj.synonyms.push(data.Code);
+  let items = [];
+  items.push(data.Code);
+  items.push(data.Namen.Kort);
+  items.push(data.Namen.Middel)
+  items.push(data.Namen.Lang)
+  items.push(data.Namen.Lang.replace(' Centraal', ' Central'))
+  items.push(data.Namen.Lang.replace(' Centraal', ''))
+  items.push(data.Namen.Lang.replace(' Centrum', ' Centre'))
+  items.push(data.Namen.Lang.replace(' Centrum', ''))
 
-  obj.synonyms.push(data.Namen.Kort);
-
-  if(data.Namen.Middel !== data.Namen.Kort) {
-    obj.synonyms.push(data.Namen.Middel)
+  for (let i=0; i<items.length; i++) {
+    if(obj.synonyms.indexOf(items[i]) === -1) {
+      obj.synonyms.push(items[i]);
+    }
   }
-
-  if(data.Namen.Lang !== data.Namen.Kort) {
-    obj.synonyms.push(data.Namen.Lang)
-  }
-
   return obj;
 }
 
