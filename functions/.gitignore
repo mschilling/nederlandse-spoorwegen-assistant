@@ -1,2 +1,3 @@
 _*.js
 .config-helper
+lib/

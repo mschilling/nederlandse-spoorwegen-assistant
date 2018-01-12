@@ -64,6 +64,7 @@ function wrapReisadviesItem(data) {
     spoor: data.ReisDeel[0].ReisStop[0].Spoor,
     status: data.Status
   }
+  console.log(data);
   return obj;
 }
 
