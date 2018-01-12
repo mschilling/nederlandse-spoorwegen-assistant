@@ -58,13 +58,17 @@ function planTrip(assistant) {
         let basicCard = BasicCard.fromReisplan(item).asBasicCard(assistant);
         response = response.addBasicCard(basicCard);
 
+        /*
         let options = assistant.buildCarousel();
-
         for( let i=1; i < result.length; i++) {
-          const carouselOption = BasicCard.fromReisplan(result[i]).asBasicCard(assistant);
+          const carouselOption = BasicCard.fromReisplan(result[i]).asCarouselOption(assistant);
+          options = options.addItems(carouselOption);
         }
+        return assistant.askWithCarousel(response, options);
+        */
 
         return assistant.tell(response);
+
       } else {
         assistant.tell(`Sorry, couldn't find any train schedule from ${fromCity} to ${toCity} just now`);
       }

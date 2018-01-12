@@ -47,4 +47,13 @@ module.exports = class BasicCard {
     return basicCard;
   }
 
+  asCarouselOption(assistant) {
+    const option = assistant.buildOptionItem(this.title, [this.title + '_alias'])
+      .setTitle(this.title)
+      .setDescription(this.description)
+      .setImage(this.imageUrl, this.imageAltText || this.title)
+      ;
+      return option;
+  }
+
 }
