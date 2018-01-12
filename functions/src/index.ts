@@ -1,5 +1,4 @@
-'use strict';
-
+// import * as functions from 'firebase-functions';
 process.env.DEBUG = 'actions-on-google:*';
 
 const Assistant = require('actions-on-google').DialogflowApp;
@@ -58,7 +57,6 @@ function planTrip(assistant) {
     })
     .catch( (error) => {
       console.log('error', error);
-      const response = assistant.buildRichResponse().addSimpleResponse(responseText);
       assistant.tell(`Sorry, couldn't find any train schedule from ${fromCity} to ${toCity} just now`);
     });
 
