@@ -37,6 +37,27 @@ class NsHelper {
 
   }
 
+  static vertrektijden(params) {
+    return new Promise(function (resolve, reject) {
+      ns.vertrektijden(params.fromStation, function (err, data) {
+        if (err !== null) return reject(err);
+
+        resolve(data);
+        // const now = moment().utcOffset(UTC_OFFSET);
+        // const resultItems = [];
+        // for (let i = 0; i < data.length; i++) {
+        //   const item = wrapReisadviesItem(data[i]);
+        //   const departureTime = moment(item.vertrekTijd).utcOffset(UTC_OFFSET);
+        //   if (departureTime.diff(now, 'minutes') > 0) {
+        //     resultItems.push(item);
+        //   }
+        // }
+        // resolve(resultItems);
+      });
+    });
+
+  }
+
   static stations() {
     return new Promise(function (resolve, reject) {
       ns.stations(function (err, data) {
