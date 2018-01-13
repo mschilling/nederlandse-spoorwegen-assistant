@@ -18,6 +18,7 @@ const ns = require('ns-api')({
 class NsHelper {
 
   static reisadvies(params) {
+    console.log(params);
     return new Promise(function (resolve, reject) {
       ns.reisadvies(params, function (err, data) {
         if (err !== null) return reject(err);
@@ -85,7 +86,7 @@ function wrapReisadviesItem(data) {
     spoor: data.ReisDeel[0].ReisStop[0].Spoor,
     status: data.Status
   }
-  console.log(data);
+  // console.log(data);
   return obj;
 }
 

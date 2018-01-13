@@ -27,21 +27,30 @@ function planTrip(assistant) {
   let toCity = assistant.getArgument('to-city');
   let fromStation = assistant.getArgument('from-station');
   let toStation = assistant.getArgument('to-station');
+  let hasFirstLast = assistant.getArgument('first_last');
+  let findFirstPlan = false;
 
 
   let departureTime;
   let arrivalTime;
   let duration;
 
-  const params = {
+  const params = <any>{
     fromStation: fromStation || fromCity,
     toStation: toStation || toCity
   };
 
+  if (hasFirstLast) {
+    findFirstPlan = true;
+    const firstStartTime = moment().utcOffset(1).startOf('day').add(1, 'day').add(5, 'hour');
+    params.dateTime = firstStartTime.format('YYYY-MM-DDTHH:mm');
+    params.previousAdvices = 0;
+  }
+
   return nsApi.reisadvies(params)
     .then((result) => {
       const now = moment().utcOffset(1);
-      if(result.length > 0) {
+      if (result.length > 0) {
         const item = result[0];
         departureTime = moment(item.vertrekTijd).utcOffset(1);
         arrivalTime = moment(item.aankomstTijd).utcOffset(1);
@@ -54,28 +63,41 @@ function planTrip(assistant) {
           speech: `The train from ${fromCity} to ${toCity} will leave ${departureTime.fromNow()}`
         }
 
+        if (findFirstPlan) {
+          responseText.displayText = `Tomorrow's first train to ${toCity} will leave at ${departureTime.format('HH:mm')}`;
+          responseText.speech = `The first train from ${fromCity} to ${toCity} tomorrow will leave ${departureTime.fromNow()}`;
+
+        }
+
         let response = assistant.buildRichResponse().addSimpleResponse(responseText);
 
-        let basicCard = BasicCard.fromReisplan(item).asBasicCard(assistant);
-        response = response.addBasicCard(basicCard);
+        if (findFirstPlan) {
+          // let options = assistant.buildCarousel();
+          // for (let i = 1; i < result.length; i++) {
+          //   const carouselOption = BasicCard.fromReisplan(result[i]).asCarouselOption(assistant);
+          //   options = options.addItems(carouselOption);
+          // }
+          // return assistant.askWithCarousel(response, options);
 
-        /*
-        let options = assistant.buildCarousel();
-        for( let i=1; i < result.length; i++) {
-          const carouselOption = BasicCard.fromReisplan(result[i]).asCarouselOption(assistant);
-          options = options.addItems(carouselOption);
+          let options = assistant.buildCarousel();
+          for (let i = 0; i < result.length; i++) {
+            const option = BasicCard.fromReisplan(result[i]).asListOption(assistant);
+            options = options.addItems(option);
+          }
+          return assistant.askWithList(response, options);
+
+        } else {
+          let basicCard = BasicCard.fromReisplan(item).asBasicCard(assistant);
+          response = response.addBasicCard(basicCard);
+          return assistant.tell(response);
         }
-        return assistant.askWithCarousel(response, options);
-        */
-
-        return assistant.tell(response);
 
       } else {
         assistant.tell(`Sorry, couldn't find any train schedule from ${fromCity} to ${toCity} just now`);
       }
 
     })
-    .catch( (error) => {
+    .catch((error) => {
       console.log('error', error);
       assistant.tell(`Sorry, couldn't find any train schedule from ${fromCity} to ${toCity} just now`);
     });
@@ -97,7 +119,7 @@ function avt(assistant) {
   return nsApi.vertrektijden(params)
     .then((result) => {
       const now = moment().utcOffset(1);
-      if(result.length > 0) {
+      if (result.length > 0) {
         const item = result[0];
         // departureTime = moment(item.vertrekTijd).utcOffset(1);
         // arrivalTime = moment(item.aankomstTijd).utcOffset(1);
@@ -117,7 +139,7 @@ function avt(assistant) {
         // return assistant.tell(response);
 
         let options = assistant.buildList(`Actual Departures`);
-        for( let i=1; i < result.length; i++) {
+        for (let i = 1; i < result.length; i++) {
           const option = BasicCard.fromAvt(result[i]).asListOption(assistant);
           options = options.addItems(option);
         }
@@ -128,7 +150,7 @@ function avt(assistant) {
       }
 
     })
-    .catch( (error) => {
+    .catch((error) => {
       console.log('error', error);
       assistant.tell(`Sorry, couldn't find any train schedule just now`);
     });
