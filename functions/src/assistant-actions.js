@@ -2,5 +2,6 @@
 
 module.exports = {
   ACTION_WELCOME: 'input.welcome',
-  ACTION_PLAN_TRIP: 'plan-trip'
+  ACTION_PLAN_TRIP: 'plan-trip',
+  ACTION_AVT: 'avt'
 };
