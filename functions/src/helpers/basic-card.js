@@ -41,7 +41,7 @@ module.exports = class BasicCard {
     if(item.RouteTekst) {
       info.push(item.RouteTekst);
     }
-    info.push(`${item.TreinSoort} ${item.EindBestemming} from Track ${item.VertrekSpoor}`);
+    info.push(`${item.Vervoerder} ${item.TreinSoort} from Track ${item.VertrekSpoor}`);
 
     let description = info.join('\r\n');
 
