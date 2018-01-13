@@ -107,7 +107,7 @@ function avt(assistant) {
 
         const responseText = {
           displayText: `Here are some results`,
-          speech: `Here are some results`
+          speech: `Here are some actual departures.`
         }
 
         let response = assistant.buildRichResponse().addSimpleResponse(responseText);
@@ -116,7 +116,7 @@ function avt(assistant) {
         // response = response.addBasicCard(basicCard);
         // return assistant.tell(response);
 
-        let options = assistant.buildList();
+        let options = assistant.buildList(`Actual Departures`);
         for( let i=1; i < result.length; i++) {
           const option = BasicCard.fromAvt(result[i]).asListOption(assistant);
           options = options.addItems(option);

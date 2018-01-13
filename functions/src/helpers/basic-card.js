@@ -32,14 +32,23 @@ module.exports = class BasicCard {
 
     const departureTime = moment(item.VertrekTijd).utcOffset(1).format('HH:mm')
 
-    const obj = new BasicCard();
-    obj.title = item.EindBestemming;
-    obj.description = (item.RouteTekst || item.EindBestemming);
-    obj.imageUrl = 'https://arkid-ns.firebaseapp.com/assets/clock.png';
-    obj.subtitle = `${departureTime} ${item.Vervoerder} ${item.TreinSoort}`;
-    // obj.buttonText = 'Go';
-    // obj.buttonUrl = 'http://youtube.com'
+    let title = departureTime + ' ' + item.EindBestemming;
+    if(item.VertrekVertragingTekst) {
+      title += ` (${item.VertrekVertragingTekst})`;
+    }
 
+    let info = [];
+    if(item.RouteTekst) {
+      info.push(item.RouteTekst);
+    }
+    info.push(`${item.TreinSoort} ${item.EindBestemming} from Track ${item.VertrekSpoor}`);
+
+    let description = info.join('\r\n');
+
+    const obj = new BasicCard();
+    obj.title = title;
+    obj.description = description;
+    obj.imageUrl = 'https://arkid-ns.firebaseapp.com/assets/clock.png';
     return obj;
   }
 
@@ -74,7 +83,7 @@ module.exports = class BasicCard {
   asListOption(assistant) {
     const option = assistant.buildOptionItem(this.title, [this.title + '_alias'])
       .setTitle(this.title)
-      .setDescription(this.subtitle + ', \r\n' + this.description)
+      .setDescription(this.description)
       .setImage(this.imageUrl, this.imageAltText || this.title)
       ;
       return option;
