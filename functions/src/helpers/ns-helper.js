@@ -1,6 +1,6 @@
 'use strict';
 
-require('dotenv').config({silent: true});
+require('dotenv').config({ silent: true });
 
 const functions = require('firebase-functions');
 const moment = require('moment');
@@ -80,13 +80,16 @@ function wrapReisadviesItem(data) {
   let obj = {
     vertrekTijd: data.ActueleVertrekTijd,
     vertrekVan: data.ReisDeel[0].ReisStop[0].Naam,
-    vertrekNaar: data.ReisDeel[0].ReisStop[data.ReisDeel[0].ReisStop.length - 1].Naam,
+    vertrekNaar: data.ReisDeel[data.ReisDeel.length-1].ReisStop[data.ReisDeel[data.ReisDeel.length-1].ReisStop.length - 1].Naam,
     vervoerType: data.ReisDeel[0].VervoerType,
     aankomstTijd: data.ActueleAankomstTijd,
     spoor: data.ReisDeel[0].ReisStop[0].Spoor,
     status: data.Status
   }
-  // console.log(data);
+  // console.dir(data, {
+  //   depth: null,
+  //   colors: true
+  // });
   return obj;
 }
 
