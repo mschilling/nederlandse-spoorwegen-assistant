@@ -67,21 +67,21 @@ function planTrip(assistant) {
         toCity = item.vertrekNaar;
 
         const responseText = {
-          displayText: `The next Train from ${fromCity} to ${toCity} will leave at ${departureTime.format('HH:mm')}`,
-          speech: `The train from ${fromCity} to ${toCity} will leave ${departureTime.fromNow()}`
+          displayText: `The next Train from ${fromCity} to ${toCity} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`,
+          speech: `The train from ${fromCity} to ${toCity} will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`
         }
 
         if (findFirstPlan) {
-          responseText.displayText = `Tomorrow's first train to ${toCity} will leave at ${departureTime.format('HH:mm')}`;
-          responseText.speech = `The first train from ${fromCity} to ${toCity} tomorrow will leave ${departureTime.fromNow()}`;
+          responseText.displayText = `Tomorrow's first train to ${toCity} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
+          responseText.speech = `The first train from ${fromCity} to ${toCity} tomorrow will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
         }
 
         if (findLastPlan) {
           const lastPlan = result[result.length-1];
           const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(1);
 
-          responseText.displayText = `Today's last train to ${toCity} will leave at ${lastPlanDepartureTime.format('HH:mm')}`;
-          responseText.speech = `The last train from ${fromCity} to ${toCity} today will leave ${lastPlanDepartureTime.fromNow()}`;
+          responseText.displayText = `Today's last train to ${toCity} will leave at ${lastPlanDepartureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
+          responseText.speech = `The last train from ${fromCity} to ${toCity} today will leave ${lastPlanDepartureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
 
         }
 
