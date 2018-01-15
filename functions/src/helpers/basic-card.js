@@ -91,7 +91,7 @@ module.exports = class BasicCard {
 
     let imageUrl = this.imageUrl;
     if(this.reisplan) {
-      this.imageUrl = 'https://arkid-ns.firebaseapp.com/assets/clock.png';
+      imageUrl = 'https://arkid-ns.firebaseapp.com/assets/clock.png';
     }
 
     const option = assistant.buildOptionItem(this.title, [this.title + '_alias'])
