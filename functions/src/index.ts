@@ -29,6 +29,7 @@ function planTrip(assistant) {
   let toStation = assistant.getArgument('to-station');
   let hasFirstLast = assistant.getArgument('first_last');
   let findFirstPlan = false;
+  let findLastPlan = false;
 
 
   let departureTime;
@@ -41,10 +42,17 @@ function planTrip(assistant) {
   };
 
   if (hasFirstLast) {
-    findFirstPlan = true;
-    const firstStartTime = moment().utcOffset(1).startOf('day').add(1, 'day').add(5, 'hour');
-    params.dateTime = firstStartTime.format('YYYY-MM-DDTHH:mm');
-    params.previousAdvices = 0;
+    const startTime = moment().utcOffset(1).startOf('day').add(1, 'day').add(5, 'hour');
+    params.dateTime = startTime.format('YYYY-MM-DDTHH:mm');
+
+    if (hasFirstLast === 'first') {
+      findFirstPlan = true;
+      params.previousAdvices = 0;
+    } else {
+      findLastPlan = true;
+      params.previousAdvices = 3;
+      params.nextAdvices = 0;
+    }
   }
 
   return nsApi.reisadvies(params)
@@ -66,12 +74,20 @@ function planTrip(assistant) {
         if (findFirstPlan) {
           responseText.displayText = `Tomorrow's first train to ${toCity} will leave at ${departureTime.format('HH:mm')}`;
           responseText.speech = `The first train from ${fromCity} to ${toCity} tomorrow will leave ${departureTime.fromNow()}`;
+        }
+
+        if (findLastPlan) {
+          const lastPlan = result[result.length-1];
+          const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(1);
+
+          responseText.displayText = `Today's last train to ${toCity} will leave at ${lastPlanDepartureTime.format('HH:mm')}`;
+          responseText.speech = `The last train from ${fromCity} to ${toCity} today will leave ${lastPlanDepartureTime.fromNow()}`;
 
         }
 
         let response = assistant.buildRichResponse().addSimpleResponse(responseText);
 
-        if (findFirstPlan) {
+        if (findFirstPlan || findLastPlan) {
           // let options = assistant.buildCarousel();
           // for (let i = 1; i < result.length; i++) {
           //   const carouselOption = BasicCard.fromReisplan(result[i]).asCarouselOption(assistant);
