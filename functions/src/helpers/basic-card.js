@@ -8,9 +8,6 @@ module.exports = class BasicCard {
 
   static fromReisplan(item) {
 
-    // Save Reisplan object
-    this.reisplan = item;
-
     const departureTime = moment(item.vertrekTijd).utcOffset(1);
     const arrivalTime = moment(item.aankomstTijd).utcOffset(1);
     const duration = arrivalTime.diff(departureTime, 'minutes');
@@ -28,13 +25,13 @@ module.exports = class BasicCard {
     // obj.buttonText = 'Go';
     // obj.buttonUrl = 'http://youtube.com'
 
+    // Save Reisplan object
+    obj.reisplan = item;
+
     return obj;
   }
 
   static fromAvt(item) {
-
-    // Save Avt object
-    this.avt = item;
 
     const departureTime = moment(item.VertrekTijd).utcOffset(1).format('HH:mm')
 
@@ -55,6 +52,10 @@ module.exports = class BasicCard {
     obj.title = title;
     obj.description = description;
     obj.imageUrl = 'https://arkid-ns.firebaseapp.com/assets/clock.png';
+
+    // Save Avt object
+    obj.avt = item;
+
     return obj;
   }
 
