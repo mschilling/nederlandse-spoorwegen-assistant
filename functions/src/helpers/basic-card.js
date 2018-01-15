@@ -60,6 +60,8 @@ module.exports = class BasicCard {
   }
 
   asBasicCard(assistant) {
+    this.assistant = assistant;
+
     let basicCard = assistant.buildBasicCard(this.description).setTitle(this.title);
 
     if (this.subtitle) {
@@ -79,6 +81,8 @@ module.exports = class BasicCard {
   }
 
   asCarouselOption(assistant) {
+    this.assistant = assistant;
+
     const option = assistant.buildOptionItem(this.title, [this.title + '_alias'])
       .setTitle(this.title)
       .setDescription(this.description)
@@ -88,18 +92,52 @@ module.exports = class BasicCard {
   }
 
   asListOption(assistant) {
+    this.assistant = assistant;
 
-    let imageUrl = this.imageUrl;
+    let title, description, imageUrl, imageAltText, subtitle, aliasList;
+    title = this.title;
+    aliasList = [title + '_alias'];
+    description = this.description;
+    imageUrl = this.imageUrl;
+    imageAltText = this.imageAltText || title;
+
     if(this.reisplan) {
+      const item = this.reisplan;
+
+      const departureTime = moment(item.vertrekTijd).utcOffset(1);
+      const arrivalTime = moment(item.aankomstTijd).utcOffset(1);
+      const duration = arrivalTime.diff(departureTime, 'minutes');
+      const fromCity = item.vertrekVan;
+      const toCity = item.vertrekNaar;
+
+      title = departureTime.format('HH:mm') + ' ' + item.vertrekNaar;
+      // if(item.VertrekVertragingTekst) {
+      //   title += ` (${item.VertrekVertragingTekst})`;
+      // }
+
+      let info = [];
+      // if(item.RouteTekst) {
+      //   info.push(item.RouteTekst);
+      // }
+      info.push(`${item.vervoerder} ${item.vervoerType} from track ${item.spoor}`);
+
+      description = info.join('\r\n');
+
       imageUrl = 'https://arkid-ns.firebaseapp.com/assets/clock.png';
+
     }
 
-    const option = assistant.buildOptionItem(this.title, [this.title + '_alias'])
-      .setTitle(this.title)
-      .setDescription(this.description)
-      .setImage(imageUrl, this.imageAltText || this.title)
+    return this.asOption(title, description, imageUrl, imageAltText, subtitle, aliasList);
+  }
+
+  asOption(title, description, imageUrl, imageAltText, subtitle, aliasList) {
+    const option = this.assistant.buildOptionItem(title, aliasList)
+      .setTitle(title)
+      .setDescription(description)
+      .setImage(imageUrl, imageAltText)
       ;
       return option;
+
   }
 
 }

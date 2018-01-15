@@ -83,13 +83,16 @@ function wrapReisadviesItem(data) {
     vertrekNaar: data.ReisDeel[data.ReisDeel.length-1].ReisStop[data.ReisDeel[data.ReisDeel.length-1].ReisStop.length - 1].Naam,
     vervoerType: data.ReisDeel[0].VervoerType,
     aankomstTijd: data.ActueleAankomstTijd,
+    aankomstSpoor: data.ReisDeel[data.ReisDeel.length-1].ReisStop[data.ReisDeel[data.ReisDeel.length-1].ReisStop.length - 1].Spoor,
     spoor: data.ReisDeel[0].ReisStop[0].Spoor,
+    vervoerder: data.ReisDeel[0].Vervoerder,
+    ritNr: data.ReisDeel[0].RitNummer,
     status: data.Status
   }
-  // console.dir(data, {
-  //   depth: null,
-  //   colors: true
-  // });
+  console.dir(data, {
+    depth: null,
+    colors: true
+  });
   return obj;
 }
 
