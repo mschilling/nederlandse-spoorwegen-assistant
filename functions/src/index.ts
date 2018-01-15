@@ -23,10 +23,8 @@ exports.assistant = functions.https.onRequest((request, response) => {
 });
 
 function planTrip(assistant) {
-  let fromCity = assistant.getArgument('from-city');
-  let toCity = assistant.getArgument('to-city');
-  let fromStation = assistant.getArgument('from-station');
-  let toStation = assistant.getArgument('to-station');
+  let fromLocation = assistant.getArgument('from-station');
+  let toLocation = assistant.getArgument('to-station');
   let hasFirstLast = assistant.getArgument('first_last');
   let findFirstPlan = false;
   let findLastPlan = false;
@@ -37,8 +35,8 @@ function planTrip(assistant) {
   let duration;
 
   const params = <any>{
-    fromStation: fromStation || fromCity,
-    toStation: toStation || toCity
+    fromStation: fromLocation,
+    toStation: toLocation
   };
 
   if (hasFirstLast) {
@@ -63,25 +61,25 @@ function planTrip(assistant) {
         departureTime = moment(item.vertrekTijd).utcOffset(1);
         arrivalTime = moment(item.aankomstTijd).utcOffset(1);
         duration = arrivalTime.diff(departureTime, 'minutes');
-        fromCity = item.vertrekVan;
-        toCity = item.vertrekNaar;
+        fromLocation = item.vertrekVan;
+        toLocation = item.vertrekNaar;
 
         const responseText = {
-          displayText: `The next Train from ${fromCity} to ${toCity} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`,
-          speech: `The train from ${fromCity} to ${toCity} will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`
+          displayText: `The next Train from ${fromLocation} to ${toLocation} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`,
+          speech: `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}.`
         }
 
         if (findFirstPlan) {
-          responseText.displayText = `Tomorrow's first train to ${toCity} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
-          responseText.speech = `The first train from ${fromCity} to ${toCity} tomorrow will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
+          responseText.displayText = `Tomorrow's first train to ${toLocation} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
+          responseText.speech = `The first train from ${fromLocation} to ${toLocation} tomorrow will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
         }
 
         if (findLastPlan) {
           const lastPlan = result[result.length-1];
           const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(1);
 
-          responseText.displayText = `Today's last train to ${toCity} will leave at ${lastPlanDepartureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
-          responseText.speech = `The last train from ${fromCity} to ${toCity} today will leave ${lastPlanDepartureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
+          responseText.displayText = `Today's last train to ${toLocation} will leave at ${lastPlanDepartureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
+          responseText.speech = `The last train from ${fromLocation} to ${toLocation} today will leave ${lastPlanDepartureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
 
         }
 
@@ -105,31 +103,30 @@ function planTrip(assistant) {
         } else {
           let basicCard = BasicCard.fromReisplan(item).asBasicCard(assistant);
           response = response.addBasicCard(basicCard);
-          return assistant.tell(response);
+          return assistant.ask(response);
         }
 
       } else {
-        assistant.tell(`Sorry, couldn't find any train schedule from ${fromCity} to ${toCity} just now`);
+        assistant.tell(`Sorry, couldn't find any train schedule from ${fromLocation} to ${toLocation} just now`);
       }
 
     })
     .catch((error) => {
       console.log('error', error);
-      assistant.tell(`Sorry, couldn't find any train schedule from ${fromCity} to ${toCity} just now`);
+      assistant.tell(`Sorry, couldn't find any train schedule just now`);
     });
 
 }
 
 function avt(assistant) {
-  let fromCity = assistant.getArgument('from-city');
-  let fromStation = assistant.getArgument('from-station');
+  let fromStation = assistant.getArgument('station');
 
   let departureTime;
   let arrivalTime;
   let duration;
 
   const params = {
-    fromStation: fromStation || fromCity
+    fromStation: fromStation
   };
 
   return nsApi.vertrektijden(params)
@@ -162,13 +159,13 @@ function avt(assistant) {
         return assistant.askWithList(response, options);
 
       } else {
-        assistant.tell(`Sorry, couldn't find any train schedule just now`);
+        assistant.tell(`Sorry, couldn't find any train departures information just now`);
       }
 
     })
     .catch((error) => {
       console.log('error', error);
-      assistant.tell(`Sorry, couldn't find any train schedule just now`);
+      assistant.tell(`Sorry, couldn't find any train departure schedule just now`);
     });
 
 }
