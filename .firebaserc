@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "arkid-ns"
+    "default": "arkid-ns",
+    "develop": "arkid-ns"
   }
 }
