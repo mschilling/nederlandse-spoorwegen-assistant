@@ -87,7 +87,8 @@ function wrapReisadviesItem(data) {
     spoor: data.ReisDeel[0].ReisStop[0].Spoor,
     vervoerder: data.ReisDeel[0].Vervoerder,
     ritNr: data.ReisDeel[0].RitNummer,
-    status: data.Status
+    status: data.Status,
+    optimaal: ( data.Optimaal === 'true' )
   }
   console.dir(data, {
     depth: null,
