@@ -46,12 +46,17 @@ module.exports = class BasicCard {
     }
     info.push(`${item.Vervoerder} ${item.TreinSoort} from Track ${item.VertrekSpoor}`);
 
+    if(item.Opmerkingen) {
+      info.push(item.Opmerkingen.Opmerking);
+    }
+
     let description = info.join('\r\n');
 
     const obj = new BasicCard();
     obj.title = title;
     obj.description = description;
     obj.imageUrl = 'https://arkid-ns.firebaseapp.com/assets/clock.png';
+
 
     // Save Avt object
     obj.avt = item;
@@ -100,6 +105,17 @@ module.exports = class BasicCard {
     description = this.description;
     imageUrl = this.imageUrl;
     imageAltText = this.imageAltText || title;
+
+    if(this.avt) {
+      const item = this.avt;
+      if(item.status == 'NIET-MOGELIJK') {
+        imageUrl = 'https://arkid-ns.firebaseapp.com/assets/warning.png';
+      }
+
+      if( item.Opmerkingen && item.Opmerkingen.Opmerking === 'Rijdt vandaag niet') {
+        imageUrl = 'https://arkid-ns.firebaseapp.com/assets/warning.png';
+      }
+    }
 
     if(this.reisplan) {
       const item = this.reisplan;
