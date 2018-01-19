@@ -90,6 +90,10 @@ function wrapReisadviesItem(data) {
     status: data.Status,
     optimaal: ( data.Optimaal === 'true' )
   }
+  if(data.Melding) {
+    obj.melding = data.Melding;
+  }
+
   console.dir(data, {
     depth: null,
     colors: true
