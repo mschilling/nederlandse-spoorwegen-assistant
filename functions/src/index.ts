@@ -5,6 +5,8 @@ const Assistant = require('actions-on-google').DialogflowApp;
 const functions = require('firebase-functions');
 const moment = require('moment');
 
+const ssml = require('ssml');
+
 const nsApi = require('./helpers/ns-helper');
 
 const Actions = require('./assistant-actions');
@@ -23,6 +25,9 @@ exports.assistant = functions.https.onRequest((request, response) => {
 });
 
 function planTrip(assistant) {
+
+  const responseSpeech = new ssml();
+
   let fromLocation = assistant.getArgument('from-station');
   let toLocation = assistant.getArgument('to-station');
   let hasFirstLast = assistant.getArgument('first_last');
@@ -68,6 +73,17 @@ function planTrip(assistant) {
           displayText: `The next Train from ${fromLocation} to ${toLocation} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`,
           speech: `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}.`
         }
+
+        responseSpeech
+          .say(`The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at `)
+          .say({
+            text: arrivalTime.format('HH:mm'),
+            interpretAs: 'time',
+            format: 'hms24'
+          })
+          .say(`on track ${item.aankomstSpoor}.`);
+
+        responseText.speech = responseSpeech.toString({ minimal: true });
 
         if (findFirstPlan) {
           responseText.displayText = `Tomorrow's first train to ${toLocation} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
