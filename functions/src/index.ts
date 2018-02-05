@@ -119,8 +119,9 @@ function planTrip(assistant) {
         } else {
           let basicCard = BasicCard.fromReisplan(item).asBasicCard(assistant);
           response = response.addBasicCard(basicCard);
-          return assistant.ask(response);
-        }
+          // return assistant.ask(response);
+          return assistant.tell(response);
+      }
 
       } else {
         assistant.tell(`Sorry, couldn't find any train schedule from ${fromLocation} to ${toLocation} just now`);
@@ -172,7 +173,8 @@ function avt(assistant) {
           const option = BasicCard.fromAvt(result[i]).asListOption(assistant);
           options = options.addItems(option);
         }
-        return assistant.askWithList(response, options);
+        // return assistant.askWithList(response, options);
+        return assistant.tell(response);
 
       } else {
         assistant.tell(`Sorry, couldn't find any train departures information just now`);
