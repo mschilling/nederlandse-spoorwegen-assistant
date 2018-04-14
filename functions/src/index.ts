@@ -173,8 +173,8 @@ function avt(assistant) {
           const option = BasicCard.fromAvt(result[i]).asListOption(assistant);
           options = options.addItems(option);
         }
-        // return assistant.askWithList(response, options);
-        return assistant.tell(response);
+        return assistant.askWithList(response, options);
+        // return assistant.tell(response);
 
       } else {
         assistant.tell(`Sorry, couldn't find any train departures information just now`);
