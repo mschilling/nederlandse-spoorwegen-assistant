@@ -1,18 +1,16 @@
 // import * as functions from 'firebase-functions';
 process.env.DEBUG = 'actions-on-google:*';
 
-const Assistant = require('actions-on-google').DialogflowApp;
 const functions = require('firebase-functions');
-const moment = require('moment');
-
-const ssml = require('ssml');
-
-const nsApi = require('./helpers/ns-helper');
-
-const Actions = require('./assistant-actions');
-const BasicCard = require('./helpers/basic-card');
 
 const i18n = require('i18n');
+const ssml = require('ssml');
+const Assistant = require('actions-on-google').DialogflowApp;
+const moment = require('moment');
+
+const nsApi = require('./helpers/ns-helper');
+const Actions = require('./assistant-actions');
+const BasicCard = require('./helpers/basic-card');
 
 exports.assistant = functions.https.onRequest((request, response) => {
   console.log('headers: ' + JSON.stringify(request.headers));
@@ -45,7 +43,6 @@ function planTrip(assistant) {
   let findFirstPlan = false;
   let findLastPlan = false;
 
-
   let departureTime;
   let arrivalTime;
   let duration;
@@ -55,10 +52,9 @@ function planTrip(assistant) {
     toStation: toLocation
   };
 
-  let speechCtx: any = {
-    fromStation: fromLocation,
-    toStation: toLocation,
-   };
+  let speechCtx: any = {};
+  speechCtx.fromStation = fromLocation;
+  speechCtx.oStation = toLocation;
 
   if (hasFirstLast) {
     const startTime = moment().utcOffset(1).startOf('day').add(1, 'day').add(5, 'hour');
