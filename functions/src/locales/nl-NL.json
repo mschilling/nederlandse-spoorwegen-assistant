@@ -5,9 +5,11 @@
   "SPEECH_FIRST_TRAIN" : "De eerste trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
   "SPEECH_LAST_TRAIN" : "De laatste trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
   "SPEECH_RESPONSE_DEPARTURES": "Hier zijn enkele actuele vertrektijden",
+  "SPEECH_OPTION_RESPONSE": "Dat was het weer, bedankt en tot de volgende keer",
 
   "ERROR_SCHEDULE_NOT_FOUND": "Sorry, ik kan op het moment geen reisinformatie vinden",
   "ERROR_SCHEDULE_A_TO_B_NOT_FOUND": "Sorry, ik kan op het moment geen reisinformatie vinden van {{fromStation}} naar {{toStation}}",
+  "ERROR_400_DEPARTURES": "Sorry, er is op dit moment geen actuele reisinformatie mogelijk",
 
   "DATE": "The date is %s"
 }
