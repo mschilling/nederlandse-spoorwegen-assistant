@@ -180,7 +180,7 @@ function avt(assistant) {
 
         const responseText = {
           displayText: `Here are some results`,
-          speech: `Here are some actual departures.`
+          speech: i18n.__('SPEECH_RESPONSE_DEPARTURES')
         }
 
         let response = assistant.buildRichResponse().addSimpleResponse(responseText);
@@ -189,7 +189,7 @@ function avt(assistant) {
         // response = response.addBasicCard(basicCard);
         // return assistant.tell(response);
 
-        let options = assistant.buildList(`Actual Departures`);
+        let options = assistant.buildList(i18n.__('TITLE_ACTUAL_DEPARTURES'));
         for (let i = 1; i < result.length; i++) {
           const option = BasicCard.fromAvt(result[i]).asListOption(assistant);
           options = options.addItems(option);
@@ -198,13 +198,13 @@ function avt(assistant) {
         // return assistant.tell(response);
 
       } else {
-        assistant.tell(`Sorry, couldn't find any train departures information just now`);
+        assistant.tell(i18n.__("ERROR_400_DEPARTURES"));
       }
 
     })
     .catch((error) => {
       console.log('error', error);
-      assistant.tell(`Sorry, couldn't find any train departure schedule just now`);
+      assistant.tell(i18n.__("ERROR_400_DEPARTURES"));
     });
 
 }

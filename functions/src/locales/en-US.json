@@ -1,10 +1,14 @@
 {
+  "TITLE_ACTUAL_DEPARTURES": "Actual Departures",
+
   "SPEECH_NEXT_TRAIN_DEPARTURE": "The train from {{fromStation}} to {{toStation}} will leave {{departure}}. You will arrive at {{arrival}} on track {{track}}.",
   "SPEECH_FIRST_TRAIN" : "The first train from {{fromStation}} to {{toStation}} will leave {{departure}}. You will arrive at {{arrival}} on track {{track}}.",
   "SPEECH_LAST_TRAIN" : "The last train from {{fromStation}} to {{toStation}} will leave {{departure}}. You will arrive at {{arrival}} on track {{track}}.",
+  "SPEECH_RESPONSE_DEPARTURES": "Here are some actual departures",
 
   "ERROR_SCHEDULE_NOT_FOUND": "Sorry, couldn't find any train schedule just now",
   "ERROR_SCHEDULE_A_TO_B_NOT_FOUND": "Sorry, couldn't find any train schedule from {{fromStation}} to {{toStation}} just now",
+  "ERROR_400_DEPARTURES": "Sorry, couldn't find any train departures information just now",
 
   "DATE": "The date is %s"
 }
