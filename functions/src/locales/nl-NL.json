@@ -1,0 +1,8 @@
+{
+  "WELCOME_BASIC": "Hi %s, welkom / %s!",
+
+
+  "NEXT_TRAIN_DEPARTURE": "De trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
+
+  "DATE": "The date is %s"
+}

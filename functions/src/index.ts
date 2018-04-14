@@ -12,11 +12,24 @@ const nsApi = require('./helpers/ns-helper');
 const Actions = require('./assistant-actions');
 const BasicCard = require('./helpers/basic-card');
 
+const i18n = require('i18n');
+
 exports.assistant = functions.https.onRequest((request, response) => {
   console.log('headers: ' + JSON.stringify(request.headers));
   console.log('body: ' + JSON.stringify(request.body));
 
+  i18n.configure({
+    locales: ['en-US', 'nl-NL'],
+    directory: __dirname + '/locales',
+    defaultLocale: 'en-US'
+  });
+
   const assistant = new Assistant({ request: request, response: response });
+  const userLocale = assistant.getUserLocale() || 'en-US';
+  i18n.setLocale(userLocale);
+  moment.locale(userLocale);
+
+  console.error(assistant.getUserLocale(), i18n.__('WELCOME_BASIC', 'Michael', 'Schilling'));
 
   const actionMap = new Map();
   actionMap.set(Actions.ACTION_PLAN_TRIP, planTrip);
@@ -83,7 +96,14 @@ function planTrip(assistant) {
           })
           .say(`on track ${item.aankomstSpoor}.`);
 
-        responseText.speech = responseSpeech.toString({ minimal: true });
+        // responseText.speech = responseSpeech.toString({ minimal: true });
+        responseText.speech = i18n.__('NEXT_TRAIN_DEPARTURE', {
+          fromStation: fromLocation,
+          toStation: toLocation,
+          departure: departureTime.fromNow(),
+          arrival: arrivalTime.format('HH:mm'),
+          track: item.aankomstSpoor
+        });
 
         if (findFirstPlan) {
           responseText.displayText = `Tomorrow's first train to ${toLocation} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
