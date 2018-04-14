@@ -12,6 +12,8 @@ const nsApi = require('./helpers/ns-helper');
 const Actions = require('./assistant-actions');
 const BasicCard = require('./helpers/basic-card');
 
+const utcOffset = 2;
+
 exports.assistant = functions.https.onRequest((request, response) => {
   console.log('headers: ' + JSON.stringify(request.headers));
   console.log('body: ' + JSON.stringify(request.body));
@@ -28,10 +30,17 @@ exports.assistant = functions.https.onRequest((request, response) => {
   moment.locale(userLocale);
 
   const actionMap = new Map();
+  actionMap.set(Actions.ACTION_OPTION_SELECT, handleOption);
   actionMap.set(Actions.ACTION_PLAN_TRIP, planTrip);
   actionMap.set(Actions.ACTION_AVT, avt);
   assistant.handleRequest(actionMap);
 });
+
+function handleOption(assistant) {
+  const optionData = assistant.getSelectedOption();
+  console.info('handleOption', optionData);
+  assistant.tell(i18n.__('SPEECH_OPTION_RESPONSE'));
+}
 
 function planTrip(assistant) {
 
@@ -57,7 +66,7 @@ function planTrip(assistant) {
   speechCtx.oStation = toLocation;
 
   if (hasFirstLast) {
-    const startTime = moment().utcOffset(1).startOf('day').add(1, 'day').add(5, 'hour');
+    const startTime = moment().utcOffset(utcOffset).startOf('day').add(1, 'day').add(5, 'hour');
     params.dateTime = startTime.format('YYYY-MM-DDTHH:mm');
 
     if (hasFirstLast === 'first') {
@@ -72,11 +81,11 @@ function planTrip(assistant) {
 
   return nsApi.reisadvies(params)
     .then((result) => {
-      const now = moment().utcOffset(1);
+      const now = moment().utcOffset(utcOffset);
       if (result.length > 0) {
         const item = result[0];
-        departureTime = moment(item.vertrekTijd).utcOffset(1);
-        arrivalTime = moment(item.aankomstTijd).utcOffset(1);
+        departureTime = moment(item.vertrekTijd).utcOffset(utcOffset);
+        arrivalTime = moment(item.aankomstTijd).utcOffset(utcOffset);
         duration = arrivalTime.diff(departureTime, 'minutes');
         fromLocation = item.vertrekVan;
         toLocation = item.vertrekNaar;
@@ -113,7 +122,7 @@ function planTrip(assistant) {
 
         if (findLastPlan) {
           const lastPlan = result[result.length-1];
-          const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(1);
+          const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(utcOffset);
 
           responseText.displayText = `Today's last train to ${toLocation} will leave at ${lastPlanDepartureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
           responseText.speech = i18n.__("SPEECH_LAST_TRAIN", speechCtx);
@@ -169,7 +178,7 @@ function avt(assistant) {
 
   return nsApi.vertrektijden(params)
     .then((result) => {
-      const now = moment().utcOffset(1);
+      const now = moment().utcOffset(utcOffset);
       if (result.length > 0) {
         const item = result[0];
         // departureTime = moment(item.vertrekTijd).utcOffset(1);

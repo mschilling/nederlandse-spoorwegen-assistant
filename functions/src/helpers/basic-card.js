@@ -1,6 +1,7 @@
 'use strict';
 
 const moment = require('moment');
+const utcOffset = 2;
 
 module.exports = class BasicCard {
 
@@ -8,8 +9,8 @@ module.exports = class BasicCard {
 
   static fromReisplan(item) {
 
-    const departureTime = moment(item.vertrekTijd).utcOffset(1);
-    const arrivalTime = moment(item.aankomstTijd).utcOffset(1);
+    const departureTime = moment(item.vertrekTijd).utcOffset(utcOffset);
+    const arrivalTime = moment(item.aankomstTijd).utcOffset(utcOffset);
     const duration = arrivalTime.diff(departureTime, 'minutes');
     const fromCity = item.vertrekVan;
     const toCity = item.vertrekNaar;
@@ -33,7 +34,7 @@ module.exports = class BasicCard {
 
   static fromAvt(item) {
 
-    const departureTime = moment(item.VertrekTijd).utcOffset(1).format('HH:mm')
+    const departureTime = moment(item.VertrekTijd).utcOffset(utcOffset).format('HH:mm')
 
     let title = departureTime + ' ' + item.EindBestemming;
     if(item.VertrekVertragingTekst) {
@@ -120,8 +121,8 @@ module.exports = class BasicCard {
     if(this.reisplan) {
       const item = this.reisplan;
 
-      const departureTime = moment(item.vertrekTijd).utcOffset(1);
-      const arrivalTime = moment(item.aankomstTijd).utcOffset(1);
+      const departureTime = moment(item.vertrekTijd).utcOffset(utcOffset);
+      const arrivalTime = moment(item.aankomstTijd).utcOffset(utcOffset);
       const duration = arrivalTime.diff(departureTime, 'minutes');
       const fromCity = item.vertrekVan;
       const toCity = item.vertrekNaar;
@@ -147,13 +148,11 @@ module.exports = class BasicCard {
   }
 
   asOption(title, description, imageUrl, imageAltText, subtitle, aliasList) {
-    const option = this.assistant.buildOptionItem(title, aliasList)
+    const option = this.assistant.buildOptionItem('Option' + title, aliasList)
       .setTitle(title)
       .setDescription(description)
       .setImage(imageUrl, imageAltText)
       ;
       return option;
-
   }
-
 }
