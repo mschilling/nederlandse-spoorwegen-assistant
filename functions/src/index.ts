@@ -144,13 +144,13 @@ function planTrip(assistant) {
       }
 
       } else {
-        assistant.tell(`Sorry, couldn't find any train schedule from ${fromLocation} to ${toLocation} just now`);
+        assistant.tell( i18n.__("ERROR_SCHEDULE_A_TO_B_NOT_FOUND", { fromStation: fromLocation, toStation: toLocation}));
       }
 
     })
     .catch((error) => {
       console.log('error', error);
-      assistant.tell(`Sorry, couldn't find any train schedule just now`);
+      assistant.tell(i18n.__('ERROR_SCHEDULE_NOT_FOUND'));
     });
 
 }
