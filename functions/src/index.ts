@@ -29,8 +29,6 @@ exports.assistant = functions.https.onRequest((request, response) => {
   i18n.setLocale(userLocale);
   moment.locale(userLocale);
 
-  console.error(assistant.getUserLocale(), i18n.__('WELCOME_BASIC', 'Michael', 'Schilling'));
-
   const actionMap = new Map();
   actionMap.set(Actions.ACTION_PLAN_TRIP, planTrip);
   actionMap.set(Actions.ACTION_AVT, avt);
@@ -57,6 +55,11 @@ function planTrip(assistant) {
     toStation: toLocation
   };
 
+  let speechCtx: any = {
+    fromStation: fromLocation,
+    toStation: toLocation,
+   };
+
   if (hasFirstLast) {
     const startTime = moment().utcOffset(1).startOf('day').add(1, 'day').add(5, 'hour');
     params.dateTime = startTime.format('YYYY-MM-DDTHH:mm');
@@ -82,6 +85,14 @@ function planTrip(assistant) {
         fromLocation = item.vertrekVan;
         toLocation = item.vertrekNaar;
 
+        speechCtx = {
+          fromStation: fromLocation,
+          toStation: toLocation,
+          departure: departureTime.fromNow(),
+          arrival: arrivalTime.format('HH:mm'),
+          track: item.aankomstSpoor
+         };
+
         const responseText = {
           displayText: `The next Train from ${fromLocation} to ${toLocation} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`,
           speech: `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}.`
@@ -97,17 +108,11 @@ function planTrip(assistant) {
           .say(`on track ${item.aankomstSpoor}.`);
 
         // responseText.speech = responseSpeech.toString({ minimal: true });
-        responseText.speech = i18n.__('NEXT_TRAIN_DEPARTURE', {
-          fromStation: fromLocation,
-          toStation: toLocation,
-          departure: departureTime.fromNow(),
-          arrival: arrivalTime.format('HH:mm'),
-          track: item.aankomstSpoor
-        });
+        responseText.speech = i18n.__('SPEECH_NEXT_TRAIN_DEPARTURE', speechCtx);
 
         if (findFirstPlan) {
           responseText.displayText = `Tomorrow's first train to ${toLocation} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
-          responseText.speech = `The first train from ${fromLocation} to ${toLocation} tomorrow will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
+          responseText.speech = i18n.__("SPEECH_FIRST_TRAIN", speechCtx);
         }
 
         if (findLastPlan) {
@@ -115,7 +120,7 @@ function planTrip(assistant) {
           const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(1);
 
           responseText.displayText = `Today's last train to ${toLocation} will leave at ${lastPlanDepartureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
-          responseText.speech = `The last train from ${fromLocation} to ${toLocation} today will leave ${lastPlanDepartureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
+          responseText.speech = i18n.__("SPEECH_LAST_TRAIN", speechCtx);
 
         }
 
@@ -144,7 +149,7 @@ function planTrip(assistant) {
       }
 
       } else {
-        assistant.tell( i18n.__("ERROR_SCHEDULE_A_TO_B_NOT_FOUND", { fromStation: fromLocation, toStation: toLocation}));
+        assistant.tell( i18n.__("ERROR_SCHEDULE_A_TO_B_NOT_FOUND", speechCtx));
       }
 
     })

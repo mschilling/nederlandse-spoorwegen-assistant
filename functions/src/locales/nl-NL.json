@@ -1,11 +1,10 @@
 {
-  "WELCOME_BASIC": "Hi %s, welkom / %s!",
-
+  "SPEECH_NEXT_TRAIN_DEPARTURE": "De trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
+  "SPEECH_FIRST_TRAIN" : "De eerste trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
+  "SPEECH_LAST_TRAIN" : "De laatste trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
 
   "ERROR_SCHEDULE_NOT_FOUND": "Sorry, ik kan op het moment geen reisinformatie vinden",
   "ERROR_SCHEDULE_A_TO_B_NOT_FOUND": "Sorry, ik kan op het moment geen reisinformatie vinden van {{fromStation}} naar {{toStation}}",
-
-  "NEXT_TRAIN_DEPARTURE": "De trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
 
   "DATE": "The date is %s"
 }
