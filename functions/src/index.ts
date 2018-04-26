@@ -194,9 +194,7 @@ function avt(assistant) {
 
         let response = assistant.buildRichResponse().addSimpleResponse(responseText);
 
-        // let basicCard = BasicCard.fromReisplan(item).asBasicCard(assistant);
-        // response = response.addBasicCard(basicCard);
-        // return assistant.tell(response);
+        response = response.addSuggestions([i18n.__('SUGGESTION_CHIP_DEPARTURES'), i18n.__('SUGGESTION_CHIP_PLAN_TRIP')]);
 
         let options = assistant.buildList(i18n.__('TITLE_ACTUAL_DEPARTURES'));
         for (let i = 1; i < result.length; i++) {

@@ -4,8 +4,11 @@
   "SPEECH_NEXT_TRAIN_DEPARTURE": "De trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
   "SPEECH_FIRST_TRAIN" : "De eerste trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
   "SPEECH_LAST_TRAIN" : "De laatste trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
-  "SPEECH_RESPONSE_DEPARTURES": "Hier zijn enkele actuele vertrektijden",
+  "SPEECH_RESPONSE_DEPARTURES": "Hier zijn enkele actuele vertrektijden. Is er verder nog iets wat ik voor je kan doen?",
   "SPEECH_OPTION_RESPONSE": "Dat was het weer, bedankt en tot de volgende keer",
+
+  "SUGGESTION_CHIP_DEPARTURES": "Vertrektijden",
+  "SUGGESTION_CHIP_PLAN_TRIP": "Plan mijn reis",
 
   "ERROR_SCHEDULE_NOT_FOUND": "Sorry, ik kan op het moment geen reisinformatie vinden",
   "ERROR_SCHEDULE_A_TO_B_NOT_FOUND": "Sorry, ik kan op het moment geen reisinformatie vinden van {{fromStation}} naar {{toStation}}",
