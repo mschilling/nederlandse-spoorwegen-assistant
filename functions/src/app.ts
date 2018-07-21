@@ -1,9 +1,10 @@
 import * as i18n from 'i18n';
-import * as moment from 'moment';
 import { dialogflow } from 'actions-on-google';
 import { optionsFallbackHandler } from './prompts/options-fallback-handler';
 import { avt } from './prompts/actual-departures';
 import { planTrip } from './prompts/plan-trip';
+
+const moment = require('moment');
 
 i18n.configure({
   locales: ['en-US', 'nl-NL'],

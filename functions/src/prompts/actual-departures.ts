@@ -1,13 +1,14 @@
 import * as i18n from 'i18n';
-import moment from 'moment';
 import { Suggestions } from 'actions-on-google';
+
+const moment = require('moment');
 
 const nsApi = require('../helpers/ns-helper');
 const BasicCard = require('../helpers/basic-card');
 
 const utcOffset = 2;
 
-export function avt(conv, _params) {
+export async function avt(conv, _params) {
   let fromStation = _params['station'];
 
   let departureTime;
@@ -17,6 +18,8 @@ export function avt(conv, _params) {
   const params = {
     fromStation: fromStation
   };
+
+  console.log('Actuele vertrektijden', params);
 
   return nsApi.vertrektijden(params)
     .then((result) => {
@@ -30,7 +33,7 @@ export function avt(conv, _params) {
         // toCity = item.vertrekNaar;
 
         const responseText = {
-          displayText: `Here are some results`,
+          text: `Here are some results`,
           speech: i18n.__('SPEECH_RESPONSE_DEPARTURES')
         }
 

@@ -1,6 +1,6 @@
-import * as ssml from 'ssml';
 import * as i18n from 'i18n';
-import moment from 'moment';
+const moment = require('moment');
+const ssml = require('ssml');
 
 const BasicCard = require('../helpers/basic-card');
 const nsApi = require('../helpers/ns-helper');
@@ -28,7 +28,7 @@ export function planTrip(conv, _params) {
 
   let speechCtx: any = {};
   speechCtx.fromStation = fromLocation;
-  speechCtx.oStation = toLocation;
+  speechCtx.toStation = toLocation;
 
   if (hasFirstLast) {
     const startTime = moment().utcOffset(utcOffset).startOf('day').add(1, 'day').add(5, 'hour');
@@ -64,7 +64,7 @@ export function planTrip(conv, _params) {
          };
 
         const responseText = {
-          displayText: `The next Train from ${fromLocation} to ${toLocation} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`,
+          text: `The next Train from ${fromLocation} to ${toLocation} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`,
           speech: `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}.`
         }
 
@@ -81,7 +81,7 @@ export function planTrip(conv, _params) {
         responseText.speech = i18n.__('SPEECH_NEXT_TRAIN_DEPARTURE', speechCtx);
 
         if (findFirstPlan) {
-          responseText.displayText = `Tomorrow's first train to ${toLocation} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
+          responseText.text = `Tomorrow's first train to ${toLocation} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
           responseText.speech = i18n.__("SPEECH_FIRST_TRAIN", speechCtx);
         }
 
@@ -89,7 +89,7 @@ export function planTrip(conv, _params) {
           const lastPlan = result[result.length-1];
           const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(utcOffset);
 
-          responseText.displayText = `Today's last train to ${toLocation} will leave at ${lastPlanDepartureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
+          responseText.text = `Today's last train to ${toLocation} will leave at ${lastPlanDepartureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
           responseText.speech = i18n.__("SPEECH_LAST_TRAIN", speechCtx);
 
         }
