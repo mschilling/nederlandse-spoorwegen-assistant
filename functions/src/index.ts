@@ -12,9 +12,6 @@ const nsApi = require('./helpers/ns-helper');
 const Actions = require('./assistant-actions');
 const BasicCard = require('./helpers/basic-card');
 
-import testJson from './test.json';
-console.log(testJson.hello);
-
 const utcOffset = 2;
 
 exports.assistant = functions.https.onRequest((request, response) => {
