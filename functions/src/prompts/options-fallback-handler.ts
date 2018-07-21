@@ -1,7 +1,7 @@
 import * as i18n from 'i18n';
 
-export function optionsFallbackHandler(assistant) {
-  const optionData = assistant.getSelectedOption();
+export function optionsFallbackHandler(conv, params, option) {
+  const optionData = option;
   console.info('handleOption', optionData);
-  assistant.tell(i18n.__('SPEECH_OPTION_RESPONSE'));
+  conv.close(i18n.__('SPEECH_OPTION_RESPONSE'));
 }

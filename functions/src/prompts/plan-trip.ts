@@ -7,13 +7,13 @@ const nsApi = require('../helpers/ns-helper');
 
 const utcOffset = 2;
 
-export function planTrip(assistant) {
+export function planTrip(conv, _params) {
 
   const responseSpeech = new ssml();
 
-  let fromLocation = assistant.getArgument('from-station');
-  let toLocation = assistant.getArgument('to-station');
-  let hasFirstLast = assistant.getArgument('first_last');
+  let fromLocation = _params['from-station'];
+  let toLocation = _params['to-station'];
+  let hasFirstLast = _params['first_last'];
   let findFirstPlan = false;
   let findLastPlan = false;
 
@@ -94,7 +94,8 @@ export function planTrip(assistant) {
 
         }
 
-        let response = assistant.buildRichResponse().addSimpleResponse(responseText);
+        // let response = assistant.buildRichResponse().addSimpleResponse(responseText);
+        conv.ask(responseText);
 
         if (findFirstPlan || findLastPlan) {
           // let options = assistant.buildCarousel();
@@ -104,28 +105,31 @@ export function planTrip(assistant) {
           // }
           // return assistant.askWithCarousel(response, options);
 
+          /*
+          // TODO
           let options = assistant.buildCarousel();
           for (let i = 0; i < result.length; i++) {
             const option = BasicCard.fromReisplan(result[i]).asListOption(assistant);
             options = options.addItems(option);
           }
           return assistant.askWithList(response, options);
+          */
 
         } else {
-          let basicCard = BasicCard.fromReisplan(item).asBasicCard(assistant);
-          response = response.addBasicCard(basicCard);
-          // return assistant.ask(response);
-          return assistant.tell(response);
+          // TODO::
+          // let basicCard = BasicCard.fromReisplan(item).asBasicCard(assistant);
+          // response = response.addBasicCard(basicCard);
+          // return assistant.tell(response);
       }
 
       } else {
-        assistant.tell( i18n.__("ERROR_SCHEDULE_A_TO_B_NOT_FOUND", speechCtx));
+        conv.close( i18n.__("ERROR_SCHEDULE_A_TO_B_NOT_FOUND", speechCtx));
       }
 
     })
     .catch((error) => {
       console.log('error', error);
-      assistant.tell(i18n.__('ERROR_SCHEDULE_NOT_FOUND'));
+      conv.close(i18n.__('ERROR_SCHEDULE_NOT_FOUND'));
     });
 
 }
