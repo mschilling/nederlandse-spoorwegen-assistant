@@ -6,7 +6,9 @@
     "outDir": "lib",
     "sourceMap": true,
     "target": "es6",
-    "allowJs": true
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
   "compileOnSave": true,
   "include": [

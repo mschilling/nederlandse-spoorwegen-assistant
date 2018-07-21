@@ -12,6 +12,9 @@ const nsApi = require('./helpers/ns-helper');
 const Actions = require('./assistant-actions');
 const BasicCard = require('./helpers/basic-card');
 
+import testJson from './test.json';
+console.log(testJson.hello);
+
 const utcOffset = 2;
 
 exports.assistant = functions.https.onRequest((request, response) => {
@@ -23,6 +26,8 @@ exports.assistant = functions.https.onRequest((request, response) => {
     directory: __dirname + '/locales',
     defaultLocale: 'en-US'
   });
+
+  // app.middleware:: IO talk may 8, 16:00
 
   const assistant = new Assistant({ request: request, response: response });
   const userLocale = assistant.getUserLocale() || 'en-US';
