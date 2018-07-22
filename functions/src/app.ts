@@ -3,6 +3,7 @@ import { dialogflow } from 'actions-on-google';
 import { optionsFallbackHandler } from './prompts/options-fallback-handler';
 import { avt } from './prompts/actual-departures';
 import { planTrip } from './prompts/plan-trip';
+import { welcome } from './prompts/welcome-intent';
 
 const moment = require('moment');
 
@@ -35,6 +36,7 @@ app.middleware(conv => {
   moment.locale(conv.user.locale);
 });
 
+app.intent('Default Welcome Intent', welcome);
 app.intent('options_handler_fallback', optionsFallbackHandler);
 app.intent('plan_trip', planTrip);
 app.intent('actual_departures', avt);
