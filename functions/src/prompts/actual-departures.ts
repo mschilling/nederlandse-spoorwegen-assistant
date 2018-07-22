@@ -1,5 +1,5 @@
 import * as i18n from 'i18n';
-import { Suggestions } from 'actions-on-google';
+import { Suggestions, SimpleResponse, List, Image } from 'actions-on-google';
 
 const moment = require('moment');
 
@@ -16,13 +16,14 @@ export async function avt(conv, _params) {
   let duration;
 
   const params = {
-    fromStation: fromStation
+    fromStation: fromStation,
   };
 
   console.log('Actuele vertrektijden', params);
 
-  return nsApi.vertrektijden(params)
-    .then((result) => {
+  return nsApi
+    .vertrektijden(params)
+    .then(result => {
       const now = moment().utcOffset(utcOffset);
       if (result.length > 0) {
         const item = result[0];
@@ -34,35 +35,64 @@ export async function avt(conv, _params) {
 
         const responseText = {
           text: `Here are some results`,
-          speech: i18n.__('SPEECH_RESPONSE_DEPARTURES')
-        }
+          speech: i18n.__('SPEECH_RESPONSE_DEPARTURES'),
+        };
 
-        conv.ask(responseText);
-        // let response = assistant.buildRichResponse().addSimpleResponse(responseText);
+        conv.ask(new SimpleResponse(responseText));
+        conv.ask(
+          new Suggestions([
+            i18n.__('SUGGESTION_CHIP_DEPARTURES'),
+            i18n.__('SUGGESTION_CHIP_PLAN_TRIP'),
+          ])
+        );
 
-        // response = response.addSuggestions([i18n.__('SUGGESTION_CHIP_DEPARTURES'), i18n.__('SUGGESTION_CHIP_PLAN_TRIP')]);
-        conv.ask(new Suggestions([i18n.__('SUGGESTION_CHIP_DEPARTURES'), i18n.__('SUGGESTION_CHIP_PLAN_TRIP')]));
-
-
-        /*
-        // TODO
-        let options = assistant.buildList(i18n.__('TITLE_ACTUAL_DEPARTURES'));
-        for (let i = 1; i < result.length; i++) {
-          const option = BasicCard.fromAvt(result[i]).asListOption(assistant);
-          options = options.addItems(option);
-        }
-        return assistant.askWithList(response, options);
-        // return assistant.tell(response);
-        */
-
+        conv.ask(getList(i18n.__('TITLE_ACTUAL_DEPARTURES'), result));
       } else {
-        conv.close(i18n.__("ERROR_400_DEPARTURES"));
+        conv.close(i18n.__('ERROR_400_DEPARTURES'));
       }
-
     })
-    .catch((error) => {
+    .catch(error => {
       console.log('error', error);
-      conv.close(i18n.__("ERROR_400_DEPARTURES"));
+      conv.close(i18n.__('ERROR_400_DEPARTURES'));
     });
+}
 
+function getList(listTitle: string, items: any[]) {
+  if (items === null) {
+    console.log('items is null');
+    return null;
+  }
+
+  let countOptions = 0;
+  let options = {};
+  for (const item of items) {
+    const card = BasicCard.fromAvt(item);
+
+    countOptions++;
+    const option = buildListOption(card);
+    options = { ...options, ...option };
+
+    if (countOptions >= 10) {
+      break;
+    }
+  }
+
+  return new List({
+    title: listTitle,
+    items: options,
+  });
+}
+
+function buildListOption(card: any) {
+  return {
+    [card.title]: {
+      synonyms: [card.title],
+      title: card.title,
+      description: card.description,
+      image: new Image({
+        url: card.imageUrl,
+        alt: card.imageAlt || card.title,
+      }),
+    },
+  };
 }
