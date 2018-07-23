@@ -1,7 +1,8 @@
 import * as i18n from 'i18n';
-import { SimpleResponse, Image, List } from 'actions-on-google';
+import { SimpleResponse, } from 'actions-on-google';
 import { NsHelper as nsApi } from '../helpers/ns-helper';
 import { buildSimpleCard } from '../utils/responses';
+import { buidList } from './build-list';
 const moment = require('moment');
 const ssml = require('ssml');
 const BasicCardHelper = require('../helpers/basic-card');
@@ -117,7 +118,8 @@ export async function planTrip(conv, _params) {
       conv.ask(new SimpleResponse(responseText));
 
       if (findFirstPlan || findLastPlan) {
-        conv.ask(getList('More travel options', data));
+        conv.ask(buidList(i18n.__('TITLE_ACTUAL_DEPARTURES'), data, BasicCardHelper.fromReisplan));
+        // conv.ask(buildList('More travel options', data, BasicCardHelper.fromReisplan));
       } else {
         const card = BasicCardHelper.fromReisplan(item);
         return conv.ask(buildSimpleCard(card));
@@ -129,44 +131,4 @@ export async function planTrip(conv, _params) {
     console.log('error', e);
     conv.close(i18n.__('ERROR_SCHEDULE_NOT_FOUND'));
   }
-}
-
-function getList(listTitle: string, items: any[]) {
-  if (items === null) {
-    console.log('items is null');
-    return null;
-  }
-
-  let countOptions = 0;
-  let options = {};
-  for (const item of items) {
-    const card = BasicCardHelper.fromReisplan(item);
-
-    countOptions++;
-    const option = buildListOption(card);
-    options = { ...options, ...option };
-
-    if (countOptions >= 10) {
-      break;
-    }
-  }
-
-  return new List({
-    title: listTitle,
-    items: options,
-  });
-}
-
-function buildListOption(card: any) {
-  return {
-    [card.title]: {
-      synonyms: [card.title],
-      title: card.title,
-      description: card.description,
-      image: new Image({
-        url: card.imageUrl,
-        alt: card.imageAlt || card.title,
-      }),
-    },
-  };
 }

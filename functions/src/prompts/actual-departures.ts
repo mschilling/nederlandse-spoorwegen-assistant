@@ -3,6 +3,8 @@ import { Suggestions, SimpleResponse } from 'actions-on-google';
 import { buidList } from './build-list';
 import { NsHelper as nsApi } from './../helpers/ns-helper';
 
+const BasicCard = require('../helpers/basic-card');
+
 export async function avt(conv, _params) {
   const params = {
     fromStation: _params['station'],
@@ -18,7 +20,7 @@ export async function avt(conv, _params) {
       return;
     }
 
-    const firstResult = data[0];
+    // const firstResult = data[0];
 
     const responseText = {
       text: `Here are some results`,
@@ -26,7 +28,7 @@ export async function avt(conv, _params) {
     };
 
     conv.ask(new SimpleResponse(responseText));
-    conv.ask(buidList(i18n.__('TITLE_ACTUAL_DEPARTURES'), firstResult));
+    conv.ask(buidList(i18n.__('TITLE_ACTUAL_DEPARTURES'), data, BasicCard.fromAvt));
     conv.ask(
       new Suggestions([
         i18n.__('SUGGESTION_CHIP_DEPARTURES'),

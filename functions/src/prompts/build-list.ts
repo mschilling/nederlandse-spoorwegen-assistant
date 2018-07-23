@@ -1,8 +1,6 @@
 import { Image, List } from 'actions-on-google';
 
-const BasicCard = require('../helpers/basic-card');
-
-export function buidList(listTitle: string, items: any[]) {
+export function buidList(listTitle: string, items: any[], basicCardWrapperCallback) {
   if (items === null) {
     console.log('items is null');
     return null;
@@ -11,7 +9,7 @@ export function buidList(listTitle: string, items: any[]) {
   let countOptions = 0;
   let options = {};
   for (const item of items) {
-    const card = BasicCard.fromAvt(item);
+    const card = basicCardWrapperCallback(item);
 
     countOptions++;
     const option = buildListOption(card);
