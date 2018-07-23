@@ -7,6 +7,7 @@ import {
   List,
 } from 'actions-on-google';
 import { NsHelper as nsApi } from '../helpers/ns-helper';
+import { buildSimpleCard } from '../utils/responses';
 const moment = require('moment');
 const ssml = require('ssml');
 const BasicCardHelper = require('../helpers/basic-card');
@@ -55,7 +56,7 @@ export async function planTrip(conv, _params) {
 
   try {
     const data = await nsApi.reisadvies(params);
-    const now = moment().utcOffset(utcOffset);
+    // const now = moment().utcOffset(utcOffset);
     if (data.length > 0) {
       const item = data[0];
       departureTime = moment(item.vertrekTijd).utcOffset(utcOffset);
@@ -135,26 +136,6 @@ export async function planTrip(conv, _params) {
     console.log('error', e);
     conv.close(i18n.__('ERROR_SCHEDULE_NOT_FOUND'));
   }
-}
-
-export function buildSimpleCard(item: any) {
-  const bc: any = new BasicCard({
-    title: item.title,
-    text: item.description,
-    image: new Image({
-      url: item.imageUrl,
-      alt: item.imageAlt || item.title,
-    }),
-  });
-
-  if (item.buttonTitle && item.buttonUrl) {
-    bc.buttons = new Button({
-      url: item.buttonUrl,
-      title: item.buttonText,
-    });
-  }
-
-  return bc;
 }
 
 function getList(listTitle: string, items: any[]) {
