@@ -1,11 +1,5 @@
 import * as i18n from 'i18n';
-import {
-  SimpleResponse,
-  Button,
-  Image,
-  BasicCard,
-  List,
-} from 'actions-on-google';
+import { SimpleResponse, Image, List } from 'actions-on-google';
 import { NsHelper as nsApi } from '../helpers/ns-helper';
 import { buildSimpleCard } from '../utils/responses';
 const moment = require('moment');
@@ -56,7 +50,6 @@ export async function planTrip(conv, _params) {
 
   try {
     const data = await nsApi.reisadvies(params);
-    // const now = moment().utcOffset(utcOffset);
     if (data.length > 0) {
       const item = data[0];
       departureTime = moment(item.vertrekTijd).utcOffset(utcOffset);
