@@ -1,8 +1,8 @@
 import * as i18n from 'i18n';
 import { SimpleResponse } from 'actions-on-google';
 import { NsHelper as nsApi } from '../helpers/ns-helper';
-import { buildSimpleCard } from '../utils/responses';
-import { buidList } from './build-list';
+import { buidList, buildSimpleCard } from '../utils/responses';
+// import { buildSimpleCard } from '../utils/responses';
 const moment = require('moment');
 const ssml = require('ssml');
 const BasicCardHelper = require('../helpers/basic-card');

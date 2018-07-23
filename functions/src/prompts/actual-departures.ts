@@ -1,7 +1,7 @@
 import * as i18n from 'i18n';
 import { Suggestions, SimpleResponse } from 'actions-on-google';
-import { buidList } from './build-list';
 import { NsHelper as nsApi } from './../helpers/ns-helper';
+import { buidList } from '../utils/responses';
 
 const BasicCard = require('../helpers/basic-card');
 
@@ -28,7 +28,9 @@ export async function avt(conv, _params) {
     };
 
     conv.ask(new SimpleResponse(responseText));
-    conv.ask(buidList(i18n.__('TITLE_ACTUAL_DEPARTURES'), data, BasicCard.fromAvt));
+    conv.ask(
+      buidList(i18n.__('TITLE_ACTUAL_DEPARTURES'), data, BasicCard.fromAvt)
+    );
     conv.ask(
       new Suggestions([
         i18n.__('SUGGESTION_CHIP_DEPARTURES'),
