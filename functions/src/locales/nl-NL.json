@@ -1,5 +1,6 @@
 {
   "TITLE_ACTUAL_DEPARTURES": "Actuele Vertrektijden",
+  "TITLE_SCHEDULES_LIST": "Meer reisopties",
 
   "SPEECH_NEXT_TRAIN_DEPARTURE": "De trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
   "SPEECH_FIRST_TRAIN" : "De eerste trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",

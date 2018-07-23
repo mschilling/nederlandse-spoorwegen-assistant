@@ -1,5 +1,6 @@
 {
   "TITLE_ACTUAL_DEPARTURES": "Actual Departures",
+  "TITLE_SCHEDULES_LIST": "Other travel options",
 
   "SPEECH_NEXT_TRAIN_DEPARTURE": "The Train from {{fromStation}} to {{toStation}} will leave {{departure}}. You will arrive at {{arrival}} on track {{track}}.",
   "SPEECH_FIRST_TRAIN" : "The first Train from {{fromStation}} to {{toStation}} will leave {{departure}}. You will arrive at {{arrival}} on track {{track}}.",
