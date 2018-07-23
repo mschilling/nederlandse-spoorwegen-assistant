@@ -1,8 +1,7 @@
 import * as i18n from 'i18n';
 import { Suggestions, SimpleResponse } from 'actions-on-google';
 import { buidList } from './build-list';
-
-const nsApi = require('../helpers/ns-helper');
+import { NsHelper as nsApi } from './../helpers/ns-helper';
 
 export async function avt(conv, _params) {
   const params = {

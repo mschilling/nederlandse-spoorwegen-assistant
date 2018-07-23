@@ -1,15 +1,19 @@
 import * as i18n from 'i18n';
-import { SimpleResponse, Button, Image, BasicCard, List } from 'actions-on-google';
+import {
+  SimpleResponse,
+  Button,
+  Image,
+  BasicCard,
+  List,
+} from 'actions-on-google';
+import { NsHelper as nsApi } from '../helpers/ns-helper';
 const moment = require('moment');
 const ssml = require('ssml');
-
 const BasicCardHelper = require('../helpers/basic-card');
-const nsApi = require('../helpers/ns-helper');
 
 const utcOffset = 2;
 
-export function planTrip(conv, _params) {
-
+export async function planTrip(conv, _params) {
   const responseSpeech = new ssml();
 
   let fromLocation = _params['from-station'];
@@ -24,7 +28,7 @@ export function planTrip(conv, _params) {
 
   const params = <any>{
     fromStation: fromLocation,
-    toStation: toLocation
+    toStation: toLocation,
   };
 
   let speechCtx: any = {};
@@ -32,7 +36,11 @@ export function planTrip(conv, _params) {
   speechCtx.toStation = toLocation;
 
   if (hasFirstLast) {
-    const startTime = moment().utcOffset(utcOffset).startOf('day').add(1, 'day').add(5, 'hour');
+    const startTime = moment()
+      .utcOffset(utcOffset)
+      .startOf('day')
+      .add(1, 'day')
+      .add(5, 'hour');
     params.dateTime = startTime.format('YYYY-MM-DDTHH:mm');
 
     if (hasFirstLast === 'first') {
@@ -45,92 +53,104 @@ export function planTrip(conv, _params) {
     }
   }
 
-  return nsApi.reisadvies(params)
-    .then((result) => {
-      const now = moment().utcOffset(utcOffset);
-      if (result.length > 0) {
-        const item = result[0];
-        departureTime = moment(item.vertrekTijd).utcOffset(utcOffset);
-        arrivalTime = moment(item.aankomstTijd).utcOffset(utcOffset);
-        duration = arrivalTime.diff(departureTime, 'minutes');
-        fromLocation = item.vertrekVan;
-        toLocation = item.vertrekNaar;
+  try {
+    const data = await nsApi.reisadvies(params);
+    const now = moment().utcOffset(utcOffset);
+    if (data.length > 0) {
+      const item = data[0];
+      departureTime = moment(item.vertrekTijd).utcOffset(utcOffset);
+      arrivalTime = moment(item.aankomstTijd).utcOffset(utcOffset);
+      duration = arrivalTime.diff(departureTime, 'minutes');
+      fromLocation = item.vertrekVan;
+      toLocation = item.vertrekNaar;
 
-        speechCtx = {
-          fromStation: fromLocation,
-          toStation: toLocation,
-          departure: departureTime.fromNow(),
-          arrival: arrivalTime.format('HH:mm'),
-          track: item.aankomstSpoor
-         };
+      speechCtx = {
+        fromStation: fromLocation,
+        toStation: toLocation,
+        departure: departureTime.fromNow(),
+        arrival: arrivalTime.format('HH:mm'),
+        track: item.aankomstSpoor,
+      };
 
-        const responseText = {
-          text: `The next Train from ${fromLocation} to ${toLocation} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`,
-          speech: `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}.`
-        }
+      const responseText = {
+        text: `The next Train from ${fromLocation} to ${toLocation} will leave at ${departureTime.format(
+          'HH:mm'
+        )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${
+          item.aankomstSpoor
+        }`,
+        speech: `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format(
+          'HH:mm'
+        )} on track ${item.aankomstSpoor}.`,
+      };
 
-        responseSpeech
-          .say(`The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at `)
-          .say({
-            text: arrivalTime.format('HH:mm'),
-            interpretAs: 'time',
-            format: 'hms24'
-          })
-          .say(`on track ${item.aankomstSpoor}.`);
+      responseSpeech
+        .say(
+          `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at `
+        )
+        .say({
+          text: arrivalTime.format('HH:mm'),
+          interpretAs: 'time',
+          format: 'hms24',
+        })
+        .say(`on track ${item.aankomstSpoor}.`);
 
-        // responseText.speech = responseSpeech.toString({ minimal: true });
-        responseText.speech = i18n.__('SPEECH_NEXT_TRAIN_DEPARTURE', speechCtx);
+      // responseText.speech = responseSpeech.toString({ minimal: true });
+      responseText.speech = i18n.__('SPEECH_NEXT_TRAIN_DEPARTURE', speechCtx);
 
-        if (findFirstPlan) {
-          responseText.text = `Tomorrow's first train to ${toLocation} will leave at ${departureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
-          responseText.speech = i18n.__("SPEECH_FIRST_TRAIN", speechCtx);
-        }
-
-        if (findLastPlan) {
-          const lastPlan = result[result.length-1];
-          const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(utcOffset);
-
-          responseText.text = `Today's last train to ${toLocation} will leave at ${lastPlanDepartureTime.format('HH:mm')}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
-          responseText.speech = i18n.__("SPEECH_LAST_TRAIN", speechCtx);
-
-        }
-
-        conv.ask(new SimpleResponse(responseText));
-
-        if (findFirstPlan || findLastPlan) {
-          conv.ask(getList('More travel options', result));
-        } else {
-          const card = BasicCardHelper.fromReisplan(item);
-          return conv.ask(buildSimpleCard(card));
+      if (findFirstPlan) {
+        responseText.text = `Tomorrow's first train to ${toLocation} will leave at ${departureTime.format(
+          'HH:mm'
+        )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${
+          item.aankomstSpoor
+        }`;
+        responseText.speech = i18n.__('SPEECH_FIRST_TRAIN', speechCtx);
       }
 
+      if (findLastPlan) {
+        const lastPlan = data[data.length - 1];
+        const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(
+          utcOffset
+        );
+
+        responseText.text = `Today's last train to ${toLocation} will leave at ${lastPlanDepartureTime.format(
+          'HH:mm'
+        )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${
+          item.aankomstSpoor
+        }`;
+        responseText.speech = i18n.__('SPEECH_LAST_TRAIN', speechCtx);
+      }
+
+      conv.ask(new SimpleResponse(responseText));
+
+      if (findFirstPlan || findLastPlan) {
+        conv.ask(getList('More travel options', data));
       } else {
-        conv.close( i18n.__("ERROR_SCHEDULE_A_TO_B_NOT_FOUND", speechCtx));
+        const card = BasicCardHelper.fromReisplan(item);
+        return conv.ask(buildSimpleCard(card));
       }
-
-    })
-    .catch((error) => {
-      console.log('error', error);
-      conv.close(i18n.__('ERROR_SCHEDULE_NOT_FOUND'));
-    });
-
+    } else {
+      conv.close(i18n.__('ERROR_SCHEDULE_A_TO_B_NOT_FOUND', speechCtx));
+    }
+  } catch (e) {
+    console.log('error', e);
+    conv.close(i18n.__('ERROR_SCHEDULE_NOT_FOUND'));
+  }
 }
 
 export function buildSimpleCard(item: any) {
-
-  const bc:any = new BasicCard({
+  const bc: any = new BasicCard({
     title: item.title,
     text: item.description,
     image: new Image({
       url: item.imageUrl,
-      alt: item.imageAlt || item.title
-    })
+      alt: item.imageAlt || item.title,
+    }),
   });
 
-  if(item.buttonTitle && item.buttonUrl) {
+  if (item.buttonTitle && item.buttonUrl) {
     bc.buttons = new Button({
       url: item.buttonUrl,
-      title: item.buttonText
+      title: item.buttonText,
     });
   }
 

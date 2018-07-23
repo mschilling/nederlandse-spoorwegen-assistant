@@ -16,7 +16,7 @@ const ns = require('ns-api')({
 });
 
 export class NsHelper {
-  static reisadvies(params) {
+  static reisadvies(params): Promise<any[]> {
     console.log(params);
     return new Promise(function(resolve, reject) {
       ns.reisadvies(params, function(err, data) {
@@ -36,7 +36,7 @@ export class NsHelper {
     });
   }
 
-  static vertrektijden(params) {
+  static vertrektijden(params): Promise<any[]> {
     return new Promise(function(resolve, reject) {
       ns.vertrektijden(params.fromStation, function(err, data) {
         if (err !== null) return reject(err);
@@ -46,7 +46,7 @@ export class NsHelper {
     });
   }
 
-  static stations() {
+  static stations(): Promise<any[]> {
     return new Promise(function(resolve, reject) {
       ns.stations(function(err, data) {
         if (err !== null) return reject(err);
