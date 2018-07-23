@@ -98,7 +98,7 @@ export function planTrip(conv, _params) {
         conv.ask(new SimpleResponse(responseText));
 
         if (findFirstPlan || findLastPlan) {
-          conv.ask(getList('Results', result));
+          conv.ask(getList('More travel options', result));
         } else {
           const card = BasicCardHelper.fromReisplan(item);
           return conv.ask(buildSimpleCard(card));
