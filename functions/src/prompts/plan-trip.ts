@@ -1,5 +1,5 @@
 import * as i18n from 'i18n';
-import { SimpleResponse, } from 'actions-on-google';
+import { SimpleResponse } from 'actions-on-google';
 import { NsHelper as nsApi } from '../helpers/ns-helper';
 import { buildSimpleCard } from '../utils/responses';
 import { buidList } from './build-list';
@@ -51,81 +51,87 @@ export async function planTrip(conv, _params) {
 
   try {
     const data = await nsApi.reisadvies(params);
-    if (data.length > 0) {
-      const item = data[0];
-      departureTime = moment(item.vertrekTijd).utcOffset(utcOffset);
-      arrivalTime = moment(item.aankomstTijd).utcOffset(utcOffset);
-      duration = arrivalTime.diff(departureTime, 'minutes');
-      fromLocation = item.vertrekVan;
-      toLocation = item.vertrekNaar;
-
-      speechCtx = {
-        fromStation: fromLocation,
-        toStation: toLocation,
-        departure: departureTime.fromNow(),
-        arrival: arrivalTime.format('HH:mm'),
-        track: item.aankomstSpoor,
-      };
-
-      const responseText = {
-        text: `The next Train from ${fromLocation} to ${toLocation} will leave at ${departureTime.format(
-          'HH:mm'
-        )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${
-          item.aankomstSpoor
-        }`,
-        speech: `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format(
-          'HH:mm'
-        )} on track ${item.aankomstSpoor}.`,
-      };
-
-      responseSpeech
-        .say(
-          `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at `
-        )
-        .say({
-          text: arrivalTime.format('HH:mm'),
-          interpretAs: 'time',
-          format: 'hms24',
-        })
-        .say(`on track ${item.aankomstSpoor}.`);
-
-      // responseText.speech = responseSpeech.toString({ minimal: true });
-      responseText.speech = i18n.__('SPEECH_NEXT_TRAIN_DEPARTURE', speechCtx);
-
-      if (findFirstPlan) {
-        responseText.text = `Tomorrow's first train to ${toLocation} will leave at ${departureTime.format(
-          'HH:mm'
-        )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${
-          item.aankomstSpoor
-        }`;
-        responseText.speech = i18n.__('SPEECH_FIRST_TRAIN', speechCtx);
-      }
-
-      if (findLastPlan) {
-        const lastPlan = data[data.length - 1];
-        const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(
-          utcOffset
-        );
-
-        responseText.text = `Today's last train to ${toLocation} will leave at ${lastPlanDepartureTime.format(
-          'HH:mm'
-        )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${
-          item.aankomstSpoor
-        }`;
-        responseText.speech = i18n.__('SPEECH_LAST_TRAIN', speechCtx);
-      }
-
-      conv.ask(new SimpleResponse(responseText));
-
-      if (findFirstPlan || findLastPlan) {
-        conv.ask(buidList(i18n.__('TITLE_ACTUAL_DEPARTURES'), data, BasicCardHelper.fromReisplan));
-        // conv.ask(buildList('More travel options', data, BasicCardHelper.fromReisplan));
-      } else {
-        const card = BasicCardHelper.fromReisplan(item);
-        return conv.ask(buildSimpleCard(card));
-      }
-    } else {
+    if (data.length === 0) {
       conv.close(i18n.__('ERROR_SCHEDULE_A_TO_B_NOT_FOUND', speechCtx));
+      return;
+    }
+
+    const item = data[0];
+    departureTime = moment(item.vertrekTijd).utcOffset(utcOffset);
+    arrivalTime = moment(item.aankomstTijd).utcOffset(utcOffset);
+    duration = arrivalTime.diff(departureTime, 'minutes');
+    fromLocation = item.vertrekVan;
+    toLocation = item.vertrekNaar;
+
+    speechCtx = {
+      fromStation: fromLocation,
+      toStation: toLocation,
+      departure: departureTime.fromNow(),
+      arrival: arrivalTime.format('HH:mm'),
+      track: item.aankomstSpoor,
+    };
+
+    const responseText = {
+      text: `The next Train from ${fromLocation} to ${toLocation} will leave at ${departureTime.format(
+        'HH:mm'
+      )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${
+        item.aankomstSpoor
+      }`,
+      speech: `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format(
+        'HH:mm'
+      )} on track ${item.aankomstSpoor}.`,
+    };
+
+    responseSpeech
+      .say(
+        `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at `
+      )
+      .say({
+        text: arrivalTime.format('HH:mm'),
+        interpretAs: 'time',
+        format: 'hms24',
+      })
+      .say(`on track ${item.aankomstSpoor}.`);
+
+    // responseText.speech = responseSpeech.toString({ minimal: true });
+    responseText.speech = i18n.__('SPEECH_NEXT_TRAIN_DEPARTURE', speechCtx);
+
+    if (findFirstPlan) {
+      responseText.text = `Tomorrow's first train to ${toLocation} will leave at ${departureTime.format(
+        'HH:mm'
+      )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${
+        item.aankomstSpoor
+      }`;
+      responseText.speech = i18n.__('SPEECH_FIRST_TRAIN', speechCtx);
+    }
+
+    if (findLastPlan) {
+      const lastPlan = data[data.length - 1];
+      const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(
+        utcOffset
+      );
+
+      responseText.text = `Today's last train to ${toLocation} will leave at ${lastPlanDepartureTime.format(
+        'HH:mm'
+      )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${
+        item.aankomstSpoor
+      }`;
+      responseText.speech = i18n.__('SPEECH_LAST_TRAIN', speechCtx);
+    }
+
+    conv.ask(new SimpleResponse(responseText));
+
+    if (findFirstPlan || findLastPlan) {
+      conv.ask(
+        buidList(
+          i18n.__('TITLE_SCHEDULES_LIST'),
+          data,
+          BasicCardHelper.fromReisplan
+        )
+      );
+    } else {
+      const card = BasicCardHelper.fromReisplan(item);
+      return conv.ask(buildSimpleCard(card));
     }
   } catch (e) {
     console.log('error', e);
