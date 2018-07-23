@@ -98,20 +98,7 @@ export function planTrip(conv, _params) {
         conv.ask(new SimpleResponse(responseText));
 
         if (findFirstPlan || findLastPlan) {
-          // let options = assistant.buildCarousel();
-          // for (let i = 1; i < result.length; i++) {
-          //   const carouselOption = BasicCard.fromReisplan(result[i]).asCarouselOption(assistant);
-          //   options = options.addItems(carouselOption);
-          // }
-          // return assistant.askWithCarousel(response, options);
-
           conv.ask(getList('Results', result));
-          // for (let i = 0; i < result.length; i++) {
-          //   const option = BasicCard.fromReisplan(result[i]).asListOption(assistant);
-          //   options = options.addItems(option);
-          // }
-          // return assistant.askWithList(response, options);
-
         } else {
           const card = BasicCardHelper.fromReisplan(item);
           return conv.ask(buildSimpleCard(card));
