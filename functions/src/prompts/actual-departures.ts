@@ -1,5 +1,5 @@
 import * as i18n from 'i18n';
-import { Suggestions, SimpleResponse, List, Image } from 'actions-on-google';
+import { Suggestions, SimpleResponse } from 'actions-on-google';
 import { buidList } from './build-list';
 
 const nsApi = require('../helpers/ns-helper');
@@ -12,7 +12,7 @@ export async function avt(conv, _params) {
   console.log('Actuele vertrektijden', params);
 
   try {
-    const data = nsApi.vertrektijden(params);
+    const data = await nsApi.vertrektijden(params);
 
     if (data.length === 0) {
       conv.close(i18n.__('ERROR_400_DEPARTURES'));
