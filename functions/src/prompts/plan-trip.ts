@@ -118,18 +118,23 @@ export function planTrip(conv, _params) {
 
 export function buildSimpleCard(item: any) {
 
-  return new BasicCard({
+  const bc:any = new BasicCard({
     title: item.title,
     text: item.description,
-    buttons: new Button({ // TODO: make Button optional
-      url: item.buttonUrl,
-      title: item.buttonTitle
-    }),
     image: new Image({
       url: item.imageUrl,
       alt: item.imageAlt || item.title
     })
   });
+
+  if(item.buttonTitle && item.buttonUrl) {
+    bc.buttons = new Button({
+      url: item.buttonUrl,
+      title: item.buttonText
+    });
+  }
+
+  return bc;
 }
 
 function getList(listTitle: string, items: any[]) {
