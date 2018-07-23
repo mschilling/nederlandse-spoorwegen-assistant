@@ -1,8 +1,9 @@
 import * as i18n from 'i18n';
+import { SimpleResponse, Button, Image, BasicCard, List } from 'actions-on-google';
 const moment = require('moment');
 const ssml = require('ssml');
 
-const BasicCard = require('../helpers/basic-card');
+const BasicCardHelper = require('../helpers/basic-card');
 const nsApi = require('../helpers/ns-helper');
 
 const utcOffset = 2;
@@ -94,8 +95,7 @@ export function planTrip(conv, _params) {
 
         }
 
-        // let response = assistant.buildRichResponse().addSimpleResponse(responseText);
-        conv.ask(responseText);
+        conv.ask(new SimpleResponse(responseText));
 
         if (findFirstPlan || findLastPlan) {
           // let options = assistant.buildCarousel();
@@ -105,21 +105,16 @@ export function planTrip(conv, _params) {
           // }
           // return assistant.askWithCarousel(response, options);
 
-          /*
-          // TODO
-          let options = assistant.buildCarousel();
-          for (let i = 0; i < result.length; i++) {
-            const option = BasicCard.fromReisplan(result[i]).asListOption(assistant);
-            options = options.addItems(option);
-          }
-          return assistant.askWithList(response, options);
-          */
+          conv.ask(getList('Results', result));
+          // for (let i = 0; i < result.length; i++) {
+          //   const option = BasicCard.fromReisplan(result[i]).asListOption(assistant);
+          //   options = options.addItems(option);
+          // }
+          // return assistant.askWithList(response, options);
 
         } else {
-          // TODO::
-          // let basicCard = BasicCard.fromReisplan(item).asBasicCard(assistant);
-          // response = response.addBasicCard(basicCard);
-          // return assistant.tell(response);
+          const card = BasicCardHelper.fromReisplan(item);
+          return conv.ask(buildSimpleCard(card));
       }
 
       } else {
@@ -132,4 +127,60 @@ export function planTrip(conv, _params) {
       conv.close(i18n.__('ERROR_SCHEDULE_NOT_FOUND'));
     });
 
+}
+
+export function buildSimpleCard(item: any) {
+
+  return new BasicCard({
+    title: item.title,
+    text: item.description,
+    buttons: new Button({ // TODO: make Button optional
+      url: item.buttonUrl,
+      title: item.buttonTitle
+    }),
+    image: new Image({
+      url: item.imageUrl,
+      alt: item.imageAlt || item.title
+    })
+  });
+}
+
+function getList(listTitle: string, items: any[]) {
+  if (items === null) {
+    console.log('items is null');
+    return null;
+  }
+
+  let countOptions = 0;
+  let options = {};
+  for (const item of items) {
+    const card = BasicCardHelper.fromReisplan(item);
+
+    countOptions++;
+    const option = buildListOption(card);
+    options = { ...options, ...option };
+
+    if (countOptions >= 10) {
+      break;
+    }
+  }
+
+  return new List({
+    title: listTitle,
+    items: options,
+  });
+}
+
+function buildListOption(card: any) {
+  return {
+    [card.title]: {
+      synonyms: [card.title],
+      title: card.title,
+      description: card.description,
+      image: new Image({
+        url: card.imageUrl,
+        alt: card.imageAlt || card.title,
+      }),
+    },
+  };
 }
