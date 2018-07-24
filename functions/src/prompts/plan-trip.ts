@@ -1,7 +1,7 @@
 import * as i18n from 'i18n';
 import { SimpleResponse } from 'actions-on-google';
 import { NsHelper as nsApi } from '../helpers/ns-helper';
-import { buidList, buildSimpleCard } from '../utils/responses';
+import { buildList, buildSimpleCard } from '../utils/responses';
 // import { buildSimpleCard } from '../utils/responses';
 const moment = require('moment');
 const ssml = require('ssml');
@@ -123,7 +123,7 @@ export async function planTrip(conv, _params) {
 
     if (findFirstPlan || findLastPlan) {
       conv.ask(
-        buidList(
+        buildList(
           i18n.__('TITLE_SCHEDULES_LIST'),
           data,
           BasicCardHelper.fromReisplan
