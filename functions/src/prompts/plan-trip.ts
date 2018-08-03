@@ -73,13 +73,8 @@ export async function planTrip(conv, _params) {
       text: `The next Train from ${fromLocation} to ${toLocation} will leave at ${departureTime.format(
         'HH:mm'
       )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`,
-      speech: `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format(
-        'HH:mm'
-      )} on track ${item.aankomstSpoor}.`,
+      speech: i18n.__('SPEECH_NEXT_TRAIN_DEPARTURE', speechCtx),
     };
-
-    // responseText.speech = responseSpeech.toString({ minimal: true });
-    responseText.speech = i18n.__('SPEECH_NEXT_TRAIN_DEPARTURE', speechCtx);
 
     if (findFirstPlan) {
       responseText.text = `Tomorrow's first train to ${toLocation} will leave at ${departureTime.format(

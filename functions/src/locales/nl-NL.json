@@ -4,6 +4,11 @@
   "welcome_back_message": "Hi, welkom terug!",
   "welcome_back_message_ssml": "<speak>Welkom terug. <break time=\"300ms\"/>Wat kan ik voor je doen?</speak>",
 
+  "train_arrival_message": "Hier zijn enkele aankomsttijden",
+  "train_arrival_message_ssml": "<speak>Hier zijn enkele aankomsttijden. <break time=\"300ms\"/>Kan ik verder nog iets voor je doen?</speak>",
+
+  "train_arrival_title": "Actuele aankomsttijden",
+
   "label_help": "Help",
   "label_plan_trip": "Plan mijn reis",
   "label_departures": "Vertrektijden",
