@@ -7,6 +7,7 @@ import { welcome } from './prompts/welcome-intent';
 
 import nlData from './locales/nl-NL.json'; // include languages
 import enData from './locales/en-US.json'; // include languages
+import { trainArrivalIntent } from './prompts/train-arrival-intent';
 
 const moment = require('moment');
 
@@ -35,8 +36,10 @@ const app = dialogflow({
 });
 
 app.middleware(conv => {
-  i18n.setLocale(conv.user.locale);
-  moment.locale(conv.user.locale);
+  if(conv.user) {
+    i18n.setLocale(conv.user.locale);
+    moment.locale(conv.user.locale);
+  }
 
   // Log matched intent to console
   console.log(`Intent ${conv.intent} matched with params ${JSON.stringify(conv.parameters)}`)
@@ -46,5 +49,6 @@ app.intent('Default Welcome Intent', welcome);
 app.intent('options_handler_fallback', optionsFallbackHandler);
 app.intent('plan_trip', planTrip);
 app.intent('actual_departures', avt);
+app.intent('train_arrival_intent', trainArrivalIntent);
 
 export { app };
