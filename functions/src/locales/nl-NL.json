@@ -1,4 +1,14 @@
 {
+  "welcome_message": "Hi, hier is je persoonlijke reisplanner",
+  "welcome_message_ssml": "<speak>Hi, ik ben je persoonlijke reisplanner voor de Nederlandse Spoorwegen. <break time=\"300ms\"/>How can I help?</speak>",
+  "welcome_back_message": "Hi, welkom terug!",
+  "welcome_back_message_ssml": "<speak>Welkom terug. <break time=\"300ms\"/>Wat kan ik voor je doen?</speak>",
+
+  "label_help": "Help",
+  "label_plan_trip": "Plan mijn reis",
+  "label_departures": "Vertrektijden",
+  "label_from_a_to_b": "Van Utrecht naar Zwolle",
+
   "TITLE_ACTUAL_DEPARTURES": "Actuele Vertrektijden",
   "TITLE_SCHEDULES_LIST": "Meer reisopties",
 
