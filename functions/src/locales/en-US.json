@@ -1,4 +1,19 @@
 {
+  "welcome_message": "Hi, I'm your personal planner for the Nederlandse Spoorwegen.",
+  "welcome_message_ssml": "<speak>Hi, I'm your personal planner for the Nederlandse Spoorwegen. <break time=\"300ms\"/>How can I help?</speak>",
+  "welcome_back_message": "Hi, welcome back.",
+  "welcome_back_message_ssml": "<speak>Welcome back. <break time=\"300ms\"/>How can I help?</speak>",
+
+  "train_arrival_message": "Here are some arrivals.",
+  "train_arrival_message_ssml": "<speak>Here are some arrivals. <break time=\"300ms\"/>Anything else I can do for you?</speak>",
+
+  "train_arrival_title": "Actuel arrivals",
+
+  "label_help": "Help",
+  "label_plan_trip": "Plan my Trip",
+  "label_departures": "Departures",
+  "label_from_a_to_b": "From Utrecht To Zwolle",
+
   "TITLE_ACTUAL_DEPARTURES": "Actual Departures",
   "TITLE_SCHEDULES_LIST": "Other travel options",
 

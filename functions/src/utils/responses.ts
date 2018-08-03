@@ -20,7 +20,7 @@ export function buildSimpleCard(item: any) {
   return bc;
 }
 
-export function buidList(
+export function buildList(
   listTitle: string,
   items: any[],
   basicCardWrapperCallback
