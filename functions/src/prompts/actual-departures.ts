@@ -1,4 +1,5 @@
-import * as i18n from 'i18n';
+const i18n = require('i18n');
+
 import { Suggestions, SimpleResponse } from 'actions-on-google';
 import { NsHelper as nsApi } from './../helpers/ns-helper';
 import { buildList } from '../utils/responses';

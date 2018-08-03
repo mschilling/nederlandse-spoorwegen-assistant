@@ -1,4 +1,3 @@
-import * as i18n from 'i18n';
 import { dialogflow } from 'actions-on-google';
 import { optionsFallbackHandler } from './prompts/options-fallback-handler';
 import { avt } from './prompts/actual-departures';
@@ -10,6 +9,7 @@ import enData from './locales/en-US.json'; // include languages
 import { trainArrivalIntent } from './prompts/train-arrival-intent';
 
 const moment = require('moment');
+const i18n = require('i18n');
 
 i18n.configure({
   locales: ['en-US', 'nl-NL'],
@@ -40,6 +40,9 @@ app.middleware(conv => {
     console.log(`[MIDDLEWARE] [user local=${JSON.stringify(conv.user.locale)}]`);
     i18n.setLocale(conv.user.locale);
     moment.locale(conv.user.locale);
+
+    console.log('locales:' + JSON.stringify(i18n.getLocales()));
+    console.log('locale:' + JSON.stringify(i18n.getLocale()));
   }
 
   // Log matched intent to console
