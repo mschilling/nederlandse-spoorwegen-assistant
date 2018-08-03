@@ -37,6 +37,9 @@ const app = dialogflow({
 app.middleware(conv => {
   i18n.setLocale(conv.user.locale);
   moment.locale(conv.user.locale);
+
+  // Log matched intent to console
+  console.log(`Intent ${conv.intent} matched with params ${JSON.stringify(conv.parameters)}`)
 });
 
 app.intent('Default Welcome Intent', welcome);
