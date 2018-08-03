@@ -4,14 +4,11 @@ import { NsHelper as nsApi } from '../helpers/ns-helper';
 import { buildList, buildSimpleCard } from '../utils/responses';
 // import { buildSimpleCard } from '../utils/responses';
 const moment = require('moment');
-const ssml = require('ssml');
 const BasicCardHelper = require('../helpers/basic-card');
 
 const utcOffset = 2;
 
 export async function planTrip(conv, _params) {
-  const responseSpeech = new ssml();
-
   let fromLocation = _params['from-station'];
   let toLocation = _params['to-station'];
   let hasFirstLast = _params['first_last'];
@@ -79,17 +76,6 @@ export async function planTrip(conv, _params) {
         'HH:mm'
       )} on track ${item.aankomstSpoor}.`,
     };
-
-    responseSpeech
-      .say(
-        `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at `
-      )
-      .say({
-        text: arrivalTime.format('HH:mm'),
-        interpretAs: 'time',
-        format: 'hms24',
-      })
-      .say(`on track ${item.aankomstSpoor}.`);
 
     // responseText.speech = responseSpeech.toString({ minimal: true });
     responseText.speech = i18n.__('SPEECH_NEXT_TRAIN_DEPARTURE', speechCtx);
