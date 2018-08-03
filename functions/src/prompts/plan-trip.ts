@@ -74,9 +74,7 @@ export async function planTrip(conv, _params) {
     const responseText = {
       text: `The next Train from ${fromLocation} to ${toLocation} will leave at ${departureTime.format(
         'HH:mm'
-      )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${
-        item.aankomstSpoor
-      }`,
+      )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`,
       speech: `The train from ${fromLocation} to ${toLocation} will leave ${departureTime.fromNow()}. You will arrive at ${arrivalTime.format(
         'HH:mm'
       )} on track ${item.aankomstSpoor}.`,
@@ -99,36 +97,24 @@ export async function planTrip(conv, _params) {
     if (findFirstPlan) {
       responseText.text = `Tomorrow's first train to ${toLocation} will leave at ${departureTime.format(
         'HH:mm'
-      )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${
-        item.aankomstSpoor
-      }`;
+      )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
       responseText.speech = i18n.__('SPEECH_FIRST_TRAIN', speechCtx);
     }
 
     if (findLastPlan) {
       const lastPlan = data[data.length - 1];
-      const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(
-        utcOffset
-      );
+      const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(utcOffset);
 
       responseText.text = `Today's last train to ${toLocation} will leave at ${lastPlanDepartureTime.format(
         'HH:mm'
-      )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${
-        item.aankomstSpoor
-      }`;
+      )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
       responseText.speech = i18n.__('SPEECH_LAST_TRAIN', speechCtx);
     }
 
     conv.ask(new SimpleResponse(responseText));
 
     if (findFirstPlan || findLastPlan) {
-      conv.ask(
-        buildList(
-          i18n.__('TITLE_SCHEDULES_LIST'),
-          data,
-          BasicCardHelper.fromReisplan
-        )
-      );
+      conv.ask(buildList(i18n.__('TITLE_SCHEDULES_LIST'), data, BasicCardHelper.fromReisplan));
     } else {
       const card = BasicCardHelper.fromReisplan(item);
       return conv.ask(buildSimpleCard(card));
