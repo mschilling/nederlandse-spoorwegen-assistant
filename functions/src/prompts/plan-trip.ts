@@ -70,26 +70,20 @@ export async function planTrip(conv, _params) {
     };
 
     const responseText = {
-      text: `The next Train from ${fromLocation} to ${toLocation} will leave at ${departureTime.format(
-        'HH:mm'
-      )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`,
+      text: i18n.__('plan_trip_next_train', speechCtx),
       speech: i18n.__('SPEECH_NEXT_TRAIN_DEPARTURE', speechCtx),
     };
 
     if (findFirstPlan) {
-      responseText.text = `Tomorrow's first train to ${toLocation} will leave at ${departureTime.format(
-        'HH:mm'
-      )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
+      responseText.text = i18n.__('plan_trip_first_train', speechCtx);
       responseText.speech = i18n.__('SPEECH_FIRST_TRAIN', speechCtx);
     }
 
     if (findLastPlan) {
       const lastPlan = data[data.length - 1];
-      const lastPlanDepartureTime = moment(lastPlan.vertrekTijd).utcOffset(utcOffset);
+      speechCtx.departure = moment(lastPlan.vertrekTijd).utcOffset(utcOffset);
 
-      responseText.text = `Today's last train to ${toLocation} will leave at ${lastPlanDepartureTime.format(
-        'HH:mm'
-      )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`;
+      responseText.text = i18n.__('plan_trip_last_train', speechCtx);
       responseText.speech = i18n.__('SPEECH_LAST_TRAIN', speechCtx);
     }
 

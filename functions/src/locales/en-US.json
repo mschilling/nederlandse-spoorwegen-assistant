@@ -7,6 +7,10 @@
   "train_arrival_message": "Here are some arrivals.",
   "train_arrival_message_ssml": "<speak>Here are some arrivals. <break time=\"300ms\"/>Anything else I can do for you?</speak>",
 
+  "plan_trip_next_train": "The next Train from {{fromStation}} to {{toStation}} will leave at {{departure}}. You will arrive at {{arrival}} on track {{track}}",
+  "plan_trip_first_train": "Tomorrows' first train to {{toStation}} will leave at {{departure}}. You will arrive at {{arrival}} on track {{track}}",
+  "plan_trip_last_train": "Today's last train to {{toStation}} will leave at {{departure}}. You will arrive at {{arrival}} on track {{track}}",
+
   "train_arrival_title": "Actuel arrivals",
 
   "label_help": "Help",
