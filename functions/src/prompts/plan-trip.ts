@@ -12,7 +12,7 @@ const utcOffset = 2;
 export async function planTrip(conv, _params) {
   let fromLocation = _params['from-station'];
   let toLocation = _params['to-station'];
-  let hasFirstLast = _params['first_last'];
+  const hasFirstLast = _params['first_last'];
   let findFirstPlan = false;
   let findLastPlan = false;
 
