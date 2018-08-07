@@ -8,6 +8,8 @@
   "train_arrival_message_ssml": "<speak>Hier zijn enkele aankomsttijden. <break time=\"300ms\"/>Kan ik verder nog iets voor je doen?</speak>",
 
   "plan_trip_next_train": "De volgende trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert om {{arrival}} op spoort {{track}}",
+  "plan_trip_first_train": "De eerste trein van {{fromStation}} naar {{toStation}} vertrekt om {{departure}}. Je arriveert om {{arrival}} op spoor {{track}}",
+  "plan_trip_last_train": "De laatste trein van {{fromStation}} naar {{toStation}} vertrekt om {{departure}}. Je arriveert om {{arrival}} op spoor {{track}}",
 
   "train_arrival_title": "Actuele aankomsttijden",
 
