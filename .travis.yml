@@ -5,9 +5,8 @@ dist: trusty
 before_script:
 - npm list -g firebase-tools --depth=0 || npm install -g firebase-tools
 script:
+- cd functions
 - npm install
-#- cd functions
-#- npm install
 after_success:
 - $TRAVIS_BUILD_DIR/.travis/deploy.sh develop
 cache:
