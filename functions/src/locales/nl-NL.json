@@ -1,6 +1,6 @@
 {
   "welcome_message": "Hi, hier is je persoonlijke reisplanner",
-  "welcome_message_ssml": "<speak>Hi, ik ben je persoonlijke reisplanner voor de Nederlandse Spoorwegen. <break time=\"300ms\"/>How can I help?</speak>",
+  "welcome_message_ssml": "<speak>Hi, ik ben je persoonlijke reisplanner voor de Nederlandse Spoorwegen. <break time=\"300ms\"/>Wat kan ik voor je doen?</speak>",
   "welcome_back_message": "Hi, welkom terug!",
   "welcome_back_message_ssml": "<speak>Welkom terug. <break time=\"300ms\"/>Wat kan ik voor je doen?</speak>",
 
