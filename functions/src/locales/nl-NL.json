@@ -1,0 +1,34 @@
+{
+  "welcome_message": "Hi, hier is je persoonlijke reisplanner",
+  "welcome_message_ssml": "<speak>Hi, ik ben je persoonlijke reisplanner voor de Nederlandse Spoorwegen. <break time=\"300ms\"/>How can I help?</speak>",
+  "welcome_back_message": "Hi, welkom terug!",
+  "welcome_back_message_ssml": "<speak>Welkom terug. <break time=\"300ms\"/>Wat kan ik voor je doen?</speak>",
+
+  "train_arrival_message": "Hier zijn enkele aankomsttijden",
+  "train_arrival_message_ssml": "<speak>Hier zijn enkele aankomsttijden. <break time=\"300ms\"/>Kan ik verder nog iets voor je doen?</speak>",
+
+  "train_arrival_title": "Actuele aankomsttijden",
+
+  "label_help": "Help",
+  "label_plan_trip": "Plan mijn reis",
+  "label_departures": "Vertrektijden",
+  "label_from_a_to_b": "Van Utrecht naar Zwolle",
+
+  "TITLE_ACTUAL_DEPARTURES": "Actuele Vertrektijden",
+  "TITLE_SCHEDULES_LIST": "Meer reisopties",
+
+  "SPEECH_NEXT_TRAIN_DEPARTURE": "De trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
+  "SPEECH_FIRST_TRAIN" : "De eerste trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
+  "SPEECH_LAST_TRAIN" : "De laatste trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert {{arrival}} op spoor {{track}}.",
+  "SPEECH_RESPONSE_DEPARTURES": "Hier zijn enkele actuele vertrektijden. Is er verder nog iets wat ik voor je kan doen?",
+  "SPEECH_OPTION_RESPONSE": "Dat was het weer, bedankt en tot de volgende keer",
+
+  "SUGGESTION_CHIP_DEPARTURES": "Vertrektijden",
+  "SUGGESTION_CHIP_PLAN_TRIP": "Plan mijn reis",
+
+  "ERROR_SCHEDULE_NOT_FOUND": "Sorry, ik kan op het moment geen reisinformatie vinden",
+  "ERROR_SCHEDULE_A_TO_B_NOT_FOUND": "Sorry, ik kan op het moment geen reisinformatie vinden van {{fromStation}} naar {{toStation}}",
+  "ERROR_400_DEPARTURES": "Sorry, er is op dit moment geen actuele reisinformatie mogelijk",
+
+  "DATE": "The date is %s"
+}
