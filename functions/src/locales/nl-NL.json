@@ -7,6 +7,8 @@
   "train_arrival_message": "Hier zijn enkele aankomsttijden",
   "train_arrival_message_ssml": "<speak>Hier zijn enkele aankomsttijden. <break time=\"300ms\"/>Kan ik verder nog iets voor je doen?</speak>",
 
+  "plan_trip_next_train": "De volgende trein van {{fromStation}} naar {{toStation}} vertrekt {{departure}}. Je arriveert om {{arrival}} op spoort {{track}}",
+
   "train_arrival_title": "Actuele aankomsttijden",
 
   "label_help": "Help",

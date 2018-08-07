@@ -70,9 +70,7 @@ export async function planTrip(conv, _params) {
     };
 
     const responseText = {
-      text: `The next Train from ${fromLocation} to ${toLocation} will leave at ${departureTime.format(
-        'HH:mm'
-      )}. You will arrive at ${arrivalTime.format('HH:mm')} on track ${item.aankomstSpoor}`,
+      text: i18n.__('plan_trip_next_train', speechCtx),
       speech: i18n.__('SPEECH_NEXT_TRAIN_DEPARTURE', speechCtx),
     };
 
