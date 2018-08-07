@@ -16,8 +16,8 @@ const ns = require('ns-api')({
 export class NsHelper {
   static reisadvies(params): Promise<any[]> {
     console.log(params);
-    return new Promise(function(resolve, reject) {
-      ns.reisadvies(params, function(err, data) {
+    return new Promise(function (resolve, reject) {
+      ns.reisadvies(params, function (err, data) {
         if (err !== null) return reject(err);
 
         const now = moment().utcOffset(UTC_OFFSET);
@@ -35,8 +35,8 @@ export class NsHelper {
   }
 
   static vertrektijden(params): Promise<any[]> {
-    return new Promise(function(resolve, reject) {
-      ns.vertrektijden(params.fromStation, function(err, data) {
+    return new Promise(function (resolve, reject) {
+      ns.vertrektijden(params.fromStation, function (err, data) {
         if (err !== null) return reject(err);
 
         resolve(data);
@@ -45,8 +45,8 @@ export class NsHelper {
   }
 
   static stations(): Promise<any[]> {
-    return new Promise(function(resolve, reject) {
-      ns.stations(function(err, data) {
+    return new Promise(function (resolve, reject) {
+      ns.stations(function (err, data) {
         if (err !== null) return reject(err);
 
         const resultItems = [];
@@ -60,18 +60,14 @@ export class NsHelper {
 
   static getSchedule(params): Promise<any[]> {
     console.log(params);
-    return new Promise(function(resolve, reject) {
-      ns.reisadvies(params, function(err, data) {
+    return new Promise(function (resolve, reject) {
+      ns.reisadvies(params, function (err, data) {
         if (err !== null) return reject(err);
 
-        const now = moment().utcOffset(UTC_OFFSET);
         const resultItems = [];
         for (const _item of data) {
           const item = wrapReisadviesItem(_item);
-          const departureTime = moment(item.vertrekTijd).utcOffset(UTC_OFFSET);
-          // if (departureTime.diff(now, 'minutes') > 0) {
-            resultItems.push(item);
-          // }
+          resultItems.push(item);
         }
         resolve(resultItems);
       });
