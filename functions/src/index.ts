@@ -6,4 +6,4 @@ process.env.DEBUG = 'actions-on-google:*';
 
 import { app } from './app';
 
-exports.assistant = functions.https.onRequest(app);
+exports.assistant = functions.region('europe-west1').https.onRequest(app);
