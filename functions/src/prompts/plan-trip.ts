@@ -81,7 +81,7 @@ export async function planTrip(conv, _params) {
 
     if (findLastPlan) {
       const lastPlan = data[data.length - 1];
-      speechCtx.departure = moment(lastPlan.vertrekTijd).utcOffset(utcOffset);
+      speechCtx.departure = moment(lastPlan.vertrekTijd).utcOffset(utcOffset).fromNow();
 
       responseText.text = i18n.__('plan_trip_last_train', speechCtx);
       responseText.speech = i18n.__('SPEECH_LAST_TRAIN', speechCtx);
