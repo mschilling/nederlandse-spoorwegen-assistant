@@ -7,8 +7,9 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "build": "npm run lint && ./node_modules/.bin/tsc",
-    "lint": "./node_modules/.bin/tslint --project tsconfig.json"
+    "lint": "./node_modules/.bin/tslint -p tsconfig.json",
+    "build:i18n": "cpx src/locales/**/*.json lib/locales",
+    "build": "npm run lint && ./node_modules/.bin/tsc && npm run build:i18n"
   },
   "main": "lib/index.js",
   "dependencies": {
@@ -22,6 +23,7 @@
     "actions-on-google": "^2.2.0",
     "axios": "^0.17.1",
     "chalk": "^2.3.0",
+    "cpx": "^1.5.0",
     "debug": "^3.1.0",
     "dotenv": "^4.0.0",
     "express": "^4.16.1",
