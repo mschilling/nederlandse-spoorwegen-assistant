@@ -8,8 +8,8 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "lint": "./node_modules/.bin/tslint -p tsconfig.json",
-    "build": "./node_modules/.bin/tslint -p tslint.json && ./node_modules/.bin/tsc && npm run build:i18n",
-    "build:i18n": "cpx src/locales/**/*.json lib/locales"
+    "build:i18n": "cpx src/locales/**/*.json lib/locales",
+    "build": "npm run lint && ./node_modules/.bin/tsc && npm run build:i18n"
   },
   "main": "lib/index.js",
   "dependencies": {
