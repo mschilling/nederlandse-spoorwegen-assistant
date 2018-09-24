@@ -4,8 +4,6 @@ import { avt } from './prompts/actual-departures';
 import { planTrip } from './prompts/plan-trip';
 import { welcome } from './prompts/welcome-intent';
 
-import nlData from './locales/nl-NL.json'; // include languages
-import enData from './locales/en-US.json'; // include languages
 import { trainArrivalIntent } from './prompts/train-arrival-intent';
 
 const moment = require('moment');
