@@ -13,13 +13,6 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/chalk": "^2.2.0",
-    "@types/debug": "0.0.30",
-    "@types/dotenv": "^4.0.2",
-    "@types/express": "^4.0.35",
-    "@types/i18n": "^0.8.3",
-    "@types/ns-api": "^2.0.1",
     "actions-on-google": "^2.2.0",
     "axios": "^0.17.1",
     "chalk": "^2.3.0",
@@ -35,6 +28,13 @@
     "ssml": "0.0.4"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/chalk": "^2.2.0",
+    "@types/debug": "0.0.30",
+    "@types/dotenv": "^4.0.2",
+    "@types/express": "^4.0.35",
+    "@types/i18n": "^0.8.3",
+    "@types/ns-api": "^2.0.1",
     "tslint": "^5.8.0",
     "typescript": "^2.9.2"
   },
