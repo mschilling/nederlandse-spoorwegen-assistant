@@ -2,5 +2,5 @@ version: 1
 
 update_configs:
   - package_manager: "javascript"
-    directory: "/functions/helpers"
+    directory: "/functions"
     update_schedule: "live"
